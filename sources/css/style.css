@@ -41,13 +41,17 @@ a {
 	.small-item {}
 	
 	.xsmall-item {}
+	
+	form.upload {
+		margin: 4px;
+	}
 
 	pre {
 		margin: 0 auto;
 		margin-left: 4px;
 		margin-right: 4px;
 		padding: 4px
-	}
+	}	
 
 }
 
@@ -55,7 +59,7 @@ a {
 
 	.big-item {
 		width: 60%;
-	}	
+	}
 
 	.pay-attention {
 		width: 70%;
@@ -74,6 +78,15 @@ a {
 
 	.xsmall-item {
 		width: 30%;
+	}
+
+	form.upload {
+		margin-left: 15%;
+		margin-right: 15%;
+		margin-top: 8px;
+		margin-bottom: 4px;
+		border: 1px solid #dee2e6;
+		border-radius: 0.25rem;
 	}
 
 	pre {

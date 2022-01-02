@@ -7,6 +7,11 @@
 		<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="sources/js/script.js"></script>
+		<script>
+			$(document).ready(() => {
+				checkUpload();
+			});
+		</script>
 	</head>
 	<body>
 		<div class="navbar navbar-light bg-light">
@@ -27,7 +32,25 @@
 			<b>该页面只能用于上传图像，望周知。</b>
 			</p>
 		</div>
-		<p align="center">该功能尚未实现!</p>
+		<form class="upload" onsubmit="uploadImage();return false;">
+			<div class="mb-3 ps-3 pe-3 pt-3">
+				<label class="form-label" for="img-file">图片文件：</label>
+				<input accept="image/*" class="form-control" type="file" id="img-file" required>
+				<span class="form-text">最好选用png格式。</span>
+			</div>
+			<div class="mb-3 ps-3 pe-3">
+				<label class="form-label" for="token">您的GitHub令牌：</label>
+				<input class="form-control" type="text" id="token" placeholder="输入您的令牌" required>
+				<span class="form-text">没有该令牌，您将无法上传。</span>
+			</div>
+			<div class="mb-3 ps-3 pe-3">
+				<label class="form-label" for="desp">描述一下该图片：</label>
+				<textarea class="form-control" id="desp" rows="3" required></textarea>
+			</div>
+			<div class="mb-3 ps-3 pe-3">
+				<button type="submit" class="btn btn-primary" id="submit-upload">上传</button>
+			</div>
+		</form>
 		<div class="split"></div>
 		<p class="copyleft-note">
 		非特殊说明，本站的全部文字及图像在<a href="license.html">CC0</a>之条款下提供，属于<b>公有领域</b>。
