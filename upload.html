@@ -32,20 +32,24 @@
 			<b>该页面只能用于上传图像，望周知。</b>
 			</p>
 		</div>
-		<form class="upload" onsubmit="uploadImage();return false;">
+		<form id="upload-form" class="upload" onsubmit="return false;">
 			<div class="mb-3 ps-3 pe-3 pt-3">
 				<label class="form-label" for="img-file">图片文件：</label>
-				<input accept="image/*" class="form-control" type="file" id="img-file" required>
+				<input accept="image/*" class="form-control" type="file" id="img-file" name="file" required>
 				<span class="form-text">最好选用png格式。</span>
 			</div>
 			<div class="mb-3 ps-3 pe-3">
+				<label class="form-label" for="name">为图片取一个名字：</label>
+				<input class="form-control" type="text" id="name" placeholder="输入文件名" name="name" required>
+			</div>
+			<div class="mb-3 ps-3 pe-3">
 				<label class="form-label" for="token">您的GitHub令牌：</label>
-				<input class="form-control" type="text" id="token" placeholder="输入您的令牌" required>
+				<input class="form-control" type="text" id="token" placeholder="输入您的令牌" name="token" required>
 				<span class="form-text">没有该令牌，您将无法上传。</span>
 			</div>
 			<div class="mb-3 ps-3 pe-3">
 				<label class="form-label" for="desp">描述一下该图片：</label>
-				<textarea class="form-control" id="desp" rows="3" required></textarea>
+				<textarea class="form-control" id="desp" rows="3" name="desp" required></textarea>
 			</div>
 			<div class="mb-3 ps-3 pe-3">
 				<button type="submit" class="btn btn-primary" id="submit-upload">上传</button>
