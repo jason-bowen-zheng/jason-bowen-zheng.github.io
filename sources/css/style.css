@@ -23,7 +23,13 @@
 	background-color: #dee2e6
 }
 
+a {
+	text-decoration: none;
+}
+
 @media (max-width: 767px) {
+
+	.big-item {}
 	
 	.pay-attention {
 		background-color: #f8f9fa;
@@ -31,6 +37,10 @@
 		border-left: 3px solid #fd7e14;
 		padding: 2px;
 	}
+
+	.small-item {}
+	
+	.xsmall-item {}
 
 	pre {
 		margin: 0 auto;
@@ -45,15 +55,7 @@
 
 	.big-item {
 		width: 60%;
-	}
-	
-	.small-item {
-		width: 40%;
-	}
-
-	.xsmall-item {
-		width: 30%;
-	}
+	}	
 
 	.pay-attention {
 		width: 70%;
@@ -64,6 +66,14 @@
 		margin-left: 15%;
 		margin-right: 15%;
 		padding: 2px;
+	}
+	
+	.small-item {
+		width: 40%;
+	}
+
+	.xsmall-item {
+		width: 30%;
 	}
 
 	pre {

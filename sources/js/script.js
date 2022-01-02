@@ -1,4 +1,4 @@
-maths_tips = [
+mathsTips = [
 	"幂函数系数必为1，与坐标轴不交",
 	"用指对互换解指对方程",
 	"复合函数法求值域可不考虑函数天然定义域",
@@ -41,20 +41,20 @@ $.ajax({
 	}
 });
 
-function show_daily_image() {
+function showDailyImage() {
 	now = new Date();
 	index = (now.getDate() + now.getHours()) % images.length;
 	$("#daily-image").attr("src", `sources/images/${images[index]["name"]}`);
 	$("#img-desp").html(images[index]["description"]);
 }
 
-function show_maths_tips() {
+function showMathsTips() {
 	now = new Date();
-	index = (now.getDate() + now.getHours()) % maths_tips.length;
-	$("#maths-tips").html(maths_tips[index]);
+	index = (now.getDate() + now.getHours()) % mathsTips.length;
+	$("#maths-tips").html(mathsTips[index]);
 }
 
-function show_saying() {
+function showSaying() {
 	now = new Date();
 	index = (now.getDate() + now.getHours()) % saying.length;
 	if (now.getMonth() == 0 && now.getDate() == 1 && now.getHours() == 0) {
@@ -66,3 +66,18 @@ function show_saying() {
 	}
 }
 
+function showToday() {
+	now = new Date();
+	num2name = ["日", "一", "二", "三", "四", "五", "六"];
+	$("#today").html(`今天是${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日，`);
+	$("#today").html($("#today").html() + `星期${num2name[now.getDay()]}。`);
+	thisYear = new Date(now.getFullYear(), 0);
+	nextYear = new Date(now.getFullYear() + 1, 0);
+	if (thisYear - now < nextYear - now) {
+		$("#today").html($("#today").html() + `<br>是今年的第${parseInt((now - thisYear) / 86400000 + 1)}天。`);
+	} else {
+		$("#today").html($("#today").html() + `<br>距明年还有${parseInt((nextYear - now) / 86400000 + 1)}天。`);
+	}
+	$("#today").html($("#today").html() + `<br>UTC时间：${now}。`);
+	$("#today-wikipedia").html(`<a href="https://zh.wikipedia.org/wiki/${now.getMonth() + 1}月${now.getDate()}日">维基百科：${now.getMonth() + 1}月${now.getDate()}日</a>`);
+}

@@ -9,9 +9,11 @@
 		<script src="sources/js/script.js"></script>
 		<script>
 			$(document).ready(() => {
-				show_maths_tips();
-				show_saying();
-				show_daily_image();
+				showMathsTips();
+				showSaying();
+				showDailyImage();
+				showToday()
+				setInterval(showToday, 1000);
 			});
 		</script>
 	</head>
@@ -65,6 +67,18 @@
 						<div class="card-img-overlay">
 							<h3 class="card-title text-primary">每日图片</h3>
 							<p id="img-desp" class="card-text text-primary"></p>
+						</div>
+					</div>
+				</div>
+				<div class="col xsmall-item">
+					<div class="card">
+						<div class="card-body">
+							<p id="today" class="card-text"></p>
+							<div class="split"></div>
+							<ul class="card-text">
+								<li><a href="https://zh.wikipedia.org/wiki/历史上的今天">维基百科：历史上的今天</a></li>
+								<li id="today-wikipedia"></li>
+							</ul>
 						</div>
 					</div>
 				</div>
