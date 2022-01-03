@@ -31,30 +31,30 @@ def main():
         return
     elif imghdr.what(name) is None:
         print("文件 \"%s\" 不是图片文件" % name)
-        # return
+        return
     b64str = b64encode(open(name, "rb").read()).decode()
-    name = input("为图片取一个名字: ") or os.path.split(name)[-1]
+    name = input("为图片取一个文件名（默认为\"%s\"）: " % os.path.split(name)[-1]) or os.path.split(name)[-1]
     desp = input("添加一些描述: ")
     ret = requests.put("https://api.github.com/repos/jason-bowen-zheng/jason-bowen-zheng.github.io/contents/sources/images/%s" % name, 
             headers={"Authorization": "token %s" % token},
             json={
                 "message": time.strftime("%Y-%m-%d(upload.py)"),
                 "content": b64str
-            }).json()
-    if ret.get("message") != time.strftime("%Y-%m-%d(upload.py)"):
-        print("错误调用GitHub API: %s" % ret["message"])
+            })
+    if ret.status_code != 201:
+        print("错误调用GitHub API: %s" % ret.json()["message"])
         return
     images_list.append({"name": name, "description": desp})
-    content = json.dumps(images_list, indent="\t")
+    content = json.dumps(images_list, ensure_ascii=False, indent="\t")
     ret = requests.put("https://api.github.com/repos/jason-bowen-zheng/jason-bowen-zheng.github.io/contents/sources/images/lists.json", 
             headers={"Authorization": "token %s" % token},
             json={
                 "message": time.strftime("%Y-%m-%d(upload.py)"),
                 "content": b64encode(content.encode()).decode(),
                 "sha": getsha()
-            }).json()
-    if ret.get("message") != time.strftime("%Y-%m-%d(upload.py)"):
-        print("错误调用GitHub API: %s" % ret["message"])
+            })
+    if ret.status_code != 200:
+        print("错误调用GitHub API: %s" % ret.json()["message"])
         return
 
 if __name__ == "__main__":
