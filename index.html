@@ -2,16 +2,18 @@
 <html>
 	<head>
 		<title>个人小站</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" charset="utf-8">
+		<meta charset="utf-8" content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
 		<link rel="stylesheet" href="sources/css/style.css">
 		<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 		<script src="sources/js/script.js"></script>
 		<script>
 			$(document).ready(() => {
 				showMathsTips();
-				showSaying();
+				showQuote();
 				showDailyImage();
+				onArticlesList(showLatestArticle);
 				showToday();
 				setInterval(showToday, 1000);
 			});
@@ -32,11 +34,11 @@
 			<div align="center">
 				<p class="text-secondary fs-3 mt-3">
 					<span class="bi bi-emoji-smile"></span>
-					摸鱼使我快乐!
+					<span>摸鱼使我快乐!</span>
 					<span class="bi bi-emoji-smile-upside-down"></span>
 				</p>
 			</div>
-			<div class="row row-cols-1 row-cols-md-2 g-4" style="margin-left: 1px; width: 100%">
+			<div class="row row-cols-1 row-cols-md-2 g-4 w-100" style="margin-left: 1px">
 				<div class="col small-item">
 					<div class="card h-100">
 						<div class="card-body">
@@ -47,7 +49,7 @@
 								</div>
 								<div class="flex-grow-1 ms-3">
 									<h5 class="card-title">数学小贴士</h5>
-									<p id="maths-tips" class="card-text"></p>
+									<p class="card-text" id="maths-tips"></p>
 								</div>
 							</div>
 						</div>
@@ -57,17 +59,16 @@
 					<div class="card h-100">
 						<div class="card-body">
 							<h5 class="card-title">名人名言</h5>
-							<p id="saying" class="card-text"></p>
+							<p class="card-text" id="quote"></p>
 						</div>
 					</div>
 				</div>
 				<div class="col xsmall-item">
 					<div class="card">
 						<div class="card-body">
-							<p id="today" class="card-text"></p>
+							<p class="card-text" id="today"></p>
 							<div class="split mb-3"></div>
 							<ul class="card-text">
-								<li><a href="https://zh.wikipedia.org/wiki/历史上的今天">维基百科：历史上的今天</a></li>
 								<li id="today-wikipedia"></li>
 							</ul>
 						</div>
@@ -75,15 +76,29 @@
 				</div>
 				<div class="col xsmall-item">
 					<div class="card text-black">
-						<img id="daily-image" class="card-img">
+						<img class="card-img" id="daily-image">
 						<div class="card-img-overlay">
 							<h3 class="card-title text-primary">每日图片</h3>
-							<p id="img-desp" class="card-text text-primary"></p>
+							<p class="card-text text-primary" id="img-desp"></p>
+						</div>
+					</div>
+				</div>
+				<div class="col small-item">
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title" id="article-title"></h5>
+							<p class="card-text" id="article-content"></p>
+							<div align="right" style="font-size: 80%">
+								<a href="javascript:void(0);">阅读全文</a>
+								<b>&middot;</b>
+								<a href="javascript:void(0);">更多文章</a>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			<p align="center" class="d-none text-secondary mt-3 ms-3 me-3" style="font-size: 50%">
+			<!-- 这里你就是看不到, 也不应该看到, 要是看到了还了得? -->
 			喜欢那一位同样喜欢热爱画画、愿意帮我修改画作、一起在课上摸鱼的女孩子。
 			</p>
 		</div>

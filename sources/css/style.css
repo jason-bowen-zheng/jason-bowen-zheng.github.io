@@ -3,9 +3,9 @@
 
 .content {
 	margin: 0 auto;
-	margin-left: 4px;
-	margin-right: 4px;
-	margin-top: 4px;
+	margin-left: 6px;
+	margin-right: 6px;
+	margin-top: 6px;
 }
 
 .copyleft-note {
@@ -30,7 +30,7 @@ a {
 @media (max-width: 767px) {
 
 	.big-item {}
-	
+
 	.pay-attention {
 		background-color: #f8f9fa;
 		border: 1px solid #fd7e14;
@@ -39,9 +39,9 @@ a {
 	}
 
 	.small-item {}
-	
+
 	.xsmall-item {}
-	
+
 	form.upload {
 		margin: 4px;
 	}
@@ -51,7 +51,7 @@ a {
 		margin-left: 4px;
 		margin-right: 4px;
 		padding: 4px
-	}	
+	}
 
 }
 
@@ -71,7 +71,7 @@ a {
 		margin-right: 15%;
 		padding: 2px;
 	}
-	
+
 	.small-item {
 		width: 40%;
 	}
