@@ -68,6 +68,16 @@ function loadArticle(articlesList, which) {
 				},
 				"success": (text) => {
 					$("#article-content").html(marked.parse(text));
+					let gitalk = new Gitalk({
+						clientID: "e2d5986e5e12e075dfc0",
+						clientSecret: "d69a3f824c4f51e89f2562727c1fa6e7da467a45",
+						repo: "jason-bowen-zheng.github.io",
+						owner: "jason-bowen-zheng",
+						admin: ["jason-bowen-zheng"],
+						id: getArticleFileName(...now, false),
+						createIssueManually: true
+					});
+					gitalk.render("gitalk-container");
 				}
 			});
 		}
@@ -110,7 +120,8 @@ function showLatestArticle(articlesList) {
 		"success": (text) => {
 			result = marked.parse(text);
 			$("#article-content").html(result.slice(0, result.indexOf("</p>") + 4));
-			$("#article-link").attr("href", `articles.html?${getArticleFileName(...articlesList[index][0], false)}`);
+			$("#time").text(getArticleFileName(...articlesList[index][0], false));
+			$("#article-link").attr("href", `articles.html?${getArticleFileName(...articlesList[index][0], false)}`);	
 		}
 	});
 }
