@@ -7,9 +7,16 @@
 		<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="sources/js/script.js"></script>
+		<script src="sources/js/upload.js"></script>
 		<script>
 			$(document).ready(() => {
-				checkUpload();
+				$("#img-file").on("change", canUpload);
+				$("#name").on("input", canUpload);
+				$("#token").on("input", canUpload);
+				$("#desp").on("input", canUpload);
+				$("#submit-upload").on("click", () => {
+					onImagesList(uploadFile);
+				});
 			});
 		</script>
 	</head>
@@ -43,7 +50,7 @@
 				<span class="form-text">最好选用png格式。</span>
 			</div>
 			<div class="mb-3 ps-3 pe-3">
-				<label class="form-label" for="name">为图片取一个名字（如<code>pic.png</code>）：</label>
+				<label class="form-label" for="name">为图片取一个新的文件名（如<code>pic.png</code>）：</label>
 				<input class="form-control" id="name" name="name" placeholder="输入文件名" type="text" required>
 			</div>
 			<div class="mb-3 ps-3 pe-3">
@@ -56,7 +63,7 @@
 				<textarea class="form-control" id="desp" name="desp" rows="3" required></textarea>
 			</div>
 			<div class="mb-3 ps-3 pe-3 d-flex justify-content-end">
-				<button class="btn btn-primary" id="submit-upload" type="submit">上传</button>
+				<button class="btn btn-primary" id="submit-upload" type="submit" disabled>上传</button>
 			</div>
 		</form>
 		<div class="split"></div>

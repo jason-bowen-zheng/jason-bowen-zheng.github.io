@@ -36,12 +36,6 @@ const quotes = [
 	["安得广厦千万间，大庇天下寒士俱欢颜，风雨不动安如山。", "唐&middot;杜甫"]
 ];
 
-function checkUpload() {
-	if (location.hostname.indexOf(".github.io") == -1) {
-		$("#submit-upload").attr("disabled", "disabled");
-	}
-}
-
 function getArticleFileName(year, month, day, fullPath=true) {
 	month = (month.toString().length == 1)? `0${month}`: month.toString();
 	day = (day.toString().length == 1)? `0${day}`: day.toString();
@@ -90,6 +84,15 @@ function loadArticle(articlesList, which) {
 function onArticlesList(callback, ...args) {
 	$.ajax({
 		"url": "articles/lists.json",
+		"success": (list) => {
+			callback(list, ...args);
+		}
+	});
+}
+
+function onImagesList(callback, ...args) {
+	$.ajax({
+		"url": "sources/images/lists.json",
 		"success": (list) => {
 			callback(list, ...args);
 		}
