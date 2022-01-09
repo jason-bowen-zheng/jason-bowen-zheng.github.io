@@ -42,17 +42,46 @@ function checkUpload() {
 	}
 }
 
-function getArticleFileName(year, month, day) {
+function getArticleFileName(year, month, day, fullPath=true) {
 	month = (month.toString().length == 1)? `0${month}`: month.toString();
 	day = (day.toString().length == 1)? `0${day}`: day.toString();
-	return `articles/${year}-${month}-${day}.md`;
+	if (!fullPath) {
+		return `${year}-${month}-${day}`;
+	} else {
+		return `articles/${year}-${month}-${day}.md`;
+	}
 }
 
-function onArticlesList(callback) {
+function loadArticle(articlesList, which) {
+	which = which.split("-");
+	let now = [parseInt(which[0]), parseInt(which[1]), parseInt(which[2])];
+	let loaded = false;
+	for (item of articlesList) {
+		if ((item[0][0] == now[0]) && (item[0][1] == now[1]) && (item[0][2] == now[2])) {
+			$("#article-title").text(item[1]);
+			document.title = `个人小站 - ${item[1]}`;
+			loaded = true;
+			$.ajax({
+				"url": getArticleFileName(...now),
+				"error": (xhr) => {
+					$("#article-content").html(`<span class="text-muted">文件未成功读取，错误代码：${xhr.status}。</span>`);
+				},
+				"success": (text) => {
+					$("#article-content").html(marked.parse(text));
+				}
+			});
+		}
+	}
+	if (!loaded) {
+		$("#article-content").html(`<p><code>${getArticleFileName(...now)}</code>不存在。</p>`);
+	}
+}
+
+function onArticlesList(callback, ...args) {
 	$.ajax({
 		"url": "articles/lists.json",
 		"success": (list) => {
-			callback(list);
+			callback(list, ...args);
 		}
 	});
 }
@@ -81,6 +110,7 @@ function showLatestArticle(articlesList) {
 		"success": (text) => {
 			result = marked.parse(text);
 			$("#article-content").html(result.slice(0, result.indexOf("</p>") + 4));
+			$("#article-link").attr("href", `articles.html?${getArticleFileName(...articlesList[index][0], false)}`);
 		}
 	});
 }
