@@ -10,7 +10,12 @@
 		<script src="sources/js/upload.js"></script>
 		<script>
 			$(document).ready(() => {
-				$("#img-file").on("change", canUpload);
+				$("#img-file").on("change", () => {
+					canUpload();
+					if (document.forms[1][0].checkValidity()) {
+						$("#name").val(document.forms[1][0].files[0].name);
+					}
+				});
 				$("#name").on("input", canUpload);
 				$("#token").on("input", canUpload);
 				$("#desp").on("input", canUpload);
@@ -50,7 +55,7 @@
 				<span class="form-text">最好选用png格式。</span>
 			</div>
 			<div class="mb-3 ps-3 pe-3">
-				<label class="form-label" for="name">为图片取一个新的文件名（如<code>pic.png</code>）：</label>
+				<label class="form-label" for="name">文件名：</label>
 				<input class="form-control" id="name" name="name" placeholder="输入文件名" type="text" required>
 			</div>
 			<div class="mb-3 ps-3 pe-3">
@@ -61,6 +66,10 @@
 			<div class="mb-3 ps-3 pe-3">
 				<label class="form-label" for="desp">描述一下该图片：</label>
 				<textarea class="form-control" id="desp" name="desp" rows="3" required></textarea>
+			</div>
+			<div class="form-check mb-3 ms-3">
+				<input class="form-check-input" id="is-daily-img" type="checkbox" value="">
+				<label class="form-check-label" for="is-daily-img">加入至每日图片</label>
 			</div>
 			<div class="mb-3 ps-3 pe-3 d-flex justify-content-end">
 				<button class="btn btn-primary" id="submit-upload" type="submit" disabled>上传</button>
