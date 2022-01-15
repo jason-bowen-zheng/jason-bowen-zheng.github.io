@@ -12,6 +12,7 @@
 			$(document).ready(() => {
 				$("#img-file").on("change", () => {
 					canUpload();
+					// 这里稍微的人性化了一下
 					if (document.forms[1][0].checkValidity()) {
 						$("#name").val(document.forms[1][0].files[0].name);
 					}
@@ -39,8 +40,7 @@
 		<div class="content">
 			<h1 align="center">上传图像</h1>
 			<p class="pay-attention mt-3">
-			<b>请注意：</b>本站的全部文字及图像在无特殊说明时在CC0之条款下提供，属于公有领域，
-			他人可以随意使用。请阁下在上传前再次确认是否有非自由许可授权之图像。<br>
+			<b>请注意：</b>本站的全部文字及图像在无特殊说明时在CC0之条款下提供，属于公有领域，他人可以随意使用。请阁下在上传前再次确认是否有非自由许可授权之图像。<br>
 			<b>该页面只能用于上传图像，望周知。</b>
 			</p>
 		</div>

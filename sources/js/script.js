@@ -47,6 +47,9 @@ function getArticleFileName(year, month, day, fullPath=true) {
 }
 
 function loadArticle(articlesList, which) {
+	// 用于在articles.html显示文章的函数, 应该是onArticlesList的回调函数
+	// 对which(哪篇文章)的检查比较松: 2022-01-08和2022-1-8都能定位到同一篇文章(在网页中为了统一都会补零)
+	// 年月日之间必须是用短横线("-")分割的
 	which = which.split("-");
 	let now = [parseInt(which[0]), parseInt(which[1]), parseInt(which[2])];
 	let loaded = false;
@@ -61,7 +64,7 @@ function loadArticle(articlesList, which) {
 					$("#article-content").html(`<span class="text-muted">文件未成功读取，错误代码：${xhr.status}。</span>`);
 				},
 				"success": (text) => {
-					$("#article-content").html(marked.parse(text));
+					$("#article-container").html(marked.parse(text));
 					let gitalk = new Gitalk({
 						clientID: "e2d5986e5e12e075dfc0",
 						clientSecret: "d69a3f824c4f51e89f2562727c1fa6e7da467a45",
@@ -82,6 +85,7 @@ function loadArticle(articlesList, which) {
 }
 
 function onArticlesList(callback, ...args) {
+	// 获取文章列表内容并调用回调函数
 	$.ajax({
 		"url": "articles/lists.json",
 		"success": (list) => {
@@ -91,6 +95,7 @@ function onArticlesList(callback, ...args) {
 }
 
 function onImagesList(callback, ...args) {
+	// 获取每日图片列表内容并调用回调函数
 	$.ajax({
 		"url": "sources/images/lists.json",
 		"success": (list) => {
