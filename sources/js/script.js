@@ -54,9 +54,9 @@ function loadArticle(articlesList, which) {
 	let now = [parseInt(which[0]), parseInt(which[1]), parseInt(which[2])];
 	let loaded = false;
 	for (item of articlesList) {
-		if ((item[0][0] == now[0]) && (item[0][1] == now[1]) && (item[0][2] == now[2])) {
+		if ((item.time[0] == now[0]) && (item.time[1] == now[1]) && (item.time[2] == now[2])) {
 			$("#article-title").text(item[1]);
-			document.title = `个人小站 - ${item[1]}`;
+			document.title = `个人小站 - ${item.title}`;
 			loaded = true;
 			$.ajax({
 				"url": getArticleFileName(...now),
@@ -65,16 +65,18 @@ function loadArticle(articlesList, which) {
 				},
 				"success": (text) => {
 					$("#article-container").html(marked.parse(text));
-					let gitalk = new Gitalk({
-						clientID: "e2d5986e5e12e075dfc0",
-						clientSecret: "d69a3f824c4f51e89f2562727c1fa6e7da467a45",
-						repo: "jason-bowen-zheng.github.io",
-						owner: "jason-bowen-zheng",
-						admin: ["jason-bowen-zheng"],
-						id: getArticleFileName(...now, false),
-						createIssueManually: true
-					});
-					gitalk.render("gitalk-container");
+					if (item.showGitalk) {
+						let gitalk = new Gitalk({
+							clientID: "e2d5986e5e12e075dfc0",
+							clientSecret: "d69a3f824c4f51e89f2562727c1fa6e7da467a45",
+							repo: "jason-bowen-zheng.github.io",
+							owner: "jason-bowen-zheng",
+							admin: ["jason-bowen-zheng"],
+							id: getArticleFileName(...now, false),
+							createIssueManually: true
+						});
+						gitalk.render("gitalk-container");
+					}
 				}
 			});
 		}
@@ -121,15 +123,15 @@ function showLatestArticle(articlesList) {
 	index = articlesList.length - 1;
 	$("#article-title").text(articlesList[index][1]);
 	$.ajax({
-		"url": getArticleFileName(...articlesList[index][0]),
+		"url": getArticleFileName(...articlesList[index].time),
 		"error": (xhr) => {
 			$("#article-content").html(`<span class="text-muted">文件未成功读取，错误代码：${xhr.status}。</span>`);
 		},
 		"success": (text) => {
 			result = marked.parse(text);
 			$("#article-content").html(result.slice(0, result.indexOf("</p>") + 4));
-			$("#time").text(getArticleFileName(...articlesList[index][0], false));
-			$("#article-link").attr("href", `articles.html?${getArticleFileName(...articlesList[index][0], false)}`);	
+			$("#time").text(getArticleFileName(...articlesList[index].time, false));
+			$("#article-link").attr("href", `articles.html?${getArticleFileName(...articlesList[index].time, false)}`);	
 		}
 	});
 }

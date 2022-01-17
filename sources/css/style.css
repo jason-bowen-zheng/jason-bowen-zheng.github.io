@@ -29,18 +29,12 @@ a {
 
 @media (max-width: 767px) {
 
-	.big-item {}
-
 	.pay-attention {
 		background-color: #f8f9fa;
 		border: 1px solid #fd7e14;
 		border-left: 3px solid #fd7e14;
 		padding: 2px;
 	}
-
-	.small-item {}
-
-	.xsmall-item {}
 
 	form.upload {
 		margin: 4px;
