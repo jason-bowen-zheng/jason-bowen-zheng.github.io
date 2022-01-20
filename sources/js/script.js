@@ -55,9 +55,12 @@ function loadArticle(articlesList, which) {
 	let loaded = false;
 	for (item of articlesList) {
 		if ((item.time[0] == now[0]) && (item.time[1] == now[1]) && (item.time[2] == now[2])) {
-			$("#article-title").text(item[1]);
+			$("#article-title").text(item.title);
 			document.title = `个人小站 - ${item.title}`;
 			loaded = true;
+			for (tag of item.tags) {
+				$("#article-tags").append(`<span class="badge rounded-pill bg-primary">${tag}</span>`);
+			}
 			$.ajax({
 				"url": getArticleFileName(...now),
 				"error": (xhr) => {
@@ -89,6 +92,7 @@ function loadArticle(articlesList, which) {
 function onArticlesList(callback, ...args) {
 	// 获取文章列表内容并调用回调函数
 	$.ajax({
+		"async": false,
 		"url": "articles/lists.json",
 		"success": (list) => {
 			callback(list, ...args);
@@ -99,6 +103,7 @@ function onArticlesList(callback, ...args) {
 function onImagesList(callback, ...args) {
 	// 获取每日图片列表内容并调用回调函数
 	$.ajax({
+		"async": false,
 		"url": "sources/images/lists.json",
 		"success": (list) => {
 			callback(list, ...args);
@@ -113,7 +118,7 @@ function showDailyImage() {
 		"success": (list) => {
 			let index = (now.getDate() + now.getHours()) % list.length;
 			$("#daily-image").attr("src", `sources/images/${list[index].name}`);
-			$("#img-desp").html(list[index].description);
+			$("#img-desp").html(list[index].description || "无描述");
 			$("#daily-image").attr("alt", list[index].description);
 		}
 	});
@@ -121,7 +126,7 @@ function showDailyImage() {
 
 function showLatestArticle(articlesList) {
 	index = articlesList.length - 1;
-	$("#article-title").text(articlesList[index][1]);
+	$("#article-title").text(articlesList[index].title);
 	$.ajax({
 		"url": getArticleFileName(...articlesList[index].time),
 		"error": (xhr) => {
@@ -151,6 +156,16 @@ function showQuote() {
 		$("#quote").html(`<b>乔治&middot;艾略特</b>：我不但喜欢被人爱，还喜欢有人告诉爱上了我。`);
 	} else {
 		$("#quote").html(`<b>${quotes[index][1]}</b>：${quotes[index][0]}`);
+	}
+}
+
+function showRecentArticle(articlesList) {
+	let now = new Date();
+	for (article of articlesList) {
+		let date = new Date(article.time[0], article.time[1] - 1, article.time[2]);
+		if (now - date < 2592000000) {
+			$("#recent-articles").append(`<li>${getArticleFileName(...article.time, false)} &rsaquo;&rsaquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</li>`);
+		}
 	}
 }
 

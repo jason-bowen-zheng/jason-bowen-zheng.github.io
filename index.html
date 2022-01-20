@@ -14,6 +14,7 @@
 				showQuote();
 				showDailyImage();
 				onArticlesList(showLatestArticle);
+				onArticlesList(showRecentArticle);
 				showToday();
 				setInterval(showToday, 1000);
 			});
@@ -92,8 +93,19 @@
 								<div class="float-end">
 									<a id="article-link" href="javascript:void(0);">阅读全文</a>
 									<b>&middot;</b>
-									<a href="javascript:void(0);">更多文章</a>
+									<a href="article.html">更多文章</a>
 								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col big-item">
+					<div class="card h-100">
+						<div class="card-body">
+							<h5 class="card-title">最近的文章</h5>
+							<div class="card-text">
+								<ul id="recent-articles" style="margin-bottom: 0px">
+								</ul>
 							</div>
 						</div>
 					</div>

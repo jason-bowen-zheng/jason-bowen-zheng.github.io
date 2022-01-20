@@ -2,6 +2,7 @@
 	{
 		"time": [2022, 1, 8],
 		"title": "第一篇文章",
+		"tags": ["随笔"],
 		"showGitalk": true
 	}
 ]
