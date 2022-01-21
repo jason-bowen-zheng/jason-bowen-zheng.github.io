@@ -20,11 +20,50 @@
 	margin: 0 auto;
 	margin-top: 4px;
 	margin-bottom: 4px;
-	background-color: #dee2e6
+	background-color: #dee2e6;
 }
 
 a {
 	text-decoration: none;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+td > ul {
+	margin-bottom: 0;
+}
+
+table > tr > th,
+table > * > tr > th {
+	background-color: rgb(234, 236, 240);
+	border: 1px solid rgba(84, 89, 93, 0.3);
+	text-align: center;
+	vertical-align: middle;
+	padding: 0.2em;
+}
+
+table > * > tr > td[scope=row] {
+	font-weight: bold;
+	background-color: rgb(234, 236, 240);
+	border: 1px solid rgba(84, 89, 93, 0.3);
+	text-align: center;
+	vertical-align: middle;
+}
+
+table > * > tr > td {
+	border: 1px solid rgba(84, 89, 93, 0.3);
+	text-align: center;
+	vertical-align: middle;
+}
+
+table > * > tr.bold > td {
+	font-weight: bold;
+}
+
+table > * > tr > td.none {
+	background-color: rgb(238, 238, 238);
 }
 
 @media (max-width: 767px) {
@@ -44,7 +83,7 @@ a {
 		margin: 0 auto;
 		margin-left: 4px;
 		margin-right: 4px;
-		padding: 4px
+		padding: 4px;
 	}
 
 }
@@ -88,7 +127,7 @@ a {
 		margin-left: 10px;
 		margin-right: 10px;
 		padding: 4px;
-		font-size: 120%
+		font-size: 120%;
 	}
 
 }

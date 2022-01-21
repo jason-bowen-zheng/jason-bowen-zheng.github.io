@@ -53,13 +53,14 @@ function loadArticle(articlesList, which) {
 	which = which.split("-");
 	let now = [parseInt(which[0]), parseInt(which[1]), parseInt(which[2])];
 	let loaded = false;
-	for (item of articlesList) {
-		if ((item.time[0] == now[0]) && (item.time[1] == now[1]) && (item.time[2] == now[2])) {
-			$("#article-title").text(item.title);
-			document.title = `个人小站 - ${item.title}`;
+	for (article of articlesList) {
+		// 使用 Array.toString() == Array 可能比较简单
+		if (article.time.toString() == now) {
+			$("#article-title").text(article.title);
+			document.title = `个人小站 - ${article.title}`;
 			loaded = true;
-			for (tag of item.tags) {
-				$("#article-tags").append(`<span class="badge rounded-pill bg-primary">${tag}</span>`);
+			for (tag of article.tags) {
+				$("#article-tags").append(`<a href="articles.html?tag=${tag}"><span class="badge rounded-pill bg-primary">${tag}</span></a>`);
 			}
 			$.ajax({
 				"url": getArticleFileName(...now),
@@ -68,7 +69,7 @@ function loadArticle(articlesList, which) {
 				},
 				"success": (text) => {
 					$("#article-container").html(marked.parse(text));
-					if (item.showGitalk) {
+					if (article.showGitalk) {
 						let gitalk = new Gitalk({
 							clientID: "e2d5986e5e12e075dfc0",
 							clientSecret: "d69a3f824c4f51e89f2562727c1fa6e7da467a45",
@@ -91,6 +92,7 @@ function loadArticle(articlesList, which) {
 
 function onArticlesList(callback, ...args) {
 	// 获取文章列表内容并调用回调函数
+	// 我知道这样子比较麻烦但是缩进少了呀!
 	$.ajax({
 		"async": false,
 		"url": "articles/lists.json",
@@ -111,6 +113,27 @@ function onImagesList(callback, ...args) {
 	});
 }
 
+function showArticlesList(articlesList) {
+	let count = 0;
+	let date = articlesList[0].time.slice(0, 2);
+	let html = "";
+	$("#list").append(`<h5>${date[0]}年${date[1]}月</h5>`);
+	for (article of articlesList) {
+		if (count > 6) {
+			break;
+		}
+		if (date.toString() != article.time.slice(0, 2)) {
+			date = article.time.slice(0, 2);
+			$("#list").append("<ul>" + html + "</ul>");
+			$("#list").append(`<div><h5>${date[0]}年${date[1]}月</h5>`);
+			html = "";
+			count ++;
+		}
+		html += `<li>${getArticleFileName(...article.time, false)} &rsaquo;&rsaquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`;
+	}
+	$("#list").append("<ul>" + html + "</ul>");
+}
+
 function showDailyImage() {
 	let now = new Date();
 	$.ajax({
@@ -125,18 +148,17 @@ function showDailyImage() {
 }
 
 function showLatestArticle(articlesList) {
-	index = articlesList.length - 1;
-	$("#article-title").text(articlesList[index].title);
+	$("#article-title").text(articlesList[0].title);
 	$.ajax({
-		"url": getArticleFileName(...articlesList[index].time),
+		"url": getArticleFileName(...articlesList[0].time),
 		"error": (xhr) => {
 			$("#article-content").html(`<span class="text-muted">文件未成功读取，错误代码：${xhr.status}。</span>`);
 		},
 		"success": (text) => {
 			result = marked.parse(text);
 			$("#article-content").html(result.slice(0, result.indexOf("</p>") + 4));
-			$("#time").text(getArticleFileName(...articlesList[index].time, false));
-			$("#article-link").attr("href", `articles.html?${getArticleFileName(...articlesList[index].time, false)}`);	
+			$("#time").text(getArticleFileName(...articlesList[0].time, false));
+			$("#article-link").attr("href", `articles.html?${getArticleFileName(...articlesList[0].time, false)}`);	
 		}
 	});
 }
@@ -152,8 +174,6 @@ function showQuote() {
 	let index = (now.getDate() + now.getHours()) % quotes.length;
 	if (now.getMonth() == 0 && now.getDate() == 1 && now.getHours() == 0) {
 		$("#quote").html(`<b>宋&middot;王安石</b>：爆竹声中一岁除，春风送暖入屠苏。`);
-	} else if (now.getMonth() == 1 && now.getDate() == 14) {
-		$("#quote").html(`<b>乔治&middot;艾略特</b>：我不但喜欢被人爱，还喜欢有人告诉爱上了我。`);
 	} else {
 		$("#quote").html(`<b>${quotes[index][1]}</b>：${quotes[index][0]}`);
 	}
@@ -163,8 +183,10 @@ function showRecentArticle(articlesList) {
 	let now = new Date();
 	for (article of articlesList) {
 		let date = new Date(article.time[0], article.time[1] - 1, article.time[2]);
-		if (now - date < 2592000000) {
-			$("#recent-articles").append(`<li>${getArticleFileName(...article.time, false)} &rsaquo;&rsaquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</li>`);
+		// 下面这个 0 < now - date < 2592000000 看起来没有必要, 但确实很有必要存在
+		// 2592000000s 是30天
+		if ((0 < now - date) && (now - date < 2592000000)) {
+			$("#recent-articles").append(`<li>${getArticleFileName(...article.time, false)} &rsaquo;&rsaquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`);
 		}
 	}
 }
@@ -176,7 +198,9 @@ function showToday() {
 	$("#today").html($("#today").html() + `（星期${num2name[now.getDay()]}），`);
 	let thisYear = new Date(now.getFullYear(), 0);
 	let nextYear = new Date(now.getFullYear() + 1, 0);
+	// 一年过了一半了吗?
 	if (thisYear - now < nextYear - now) {
+		// 86400000s 是一天
 		$("#today").html($("#today").html() + `是今年的第${parseInt((now - thisYear) / 86400000 + 1)}天。`);
 	} else {
 		$("#today").html($("#today").html() + `距明年还有${parseInt((nextYear - now) / 86400000 + 1)}天。`);
