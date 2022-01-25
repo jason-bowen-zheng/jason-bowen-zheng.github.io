@@ -53,6 +53,16 @@ function loadArticle(articlesList, which) {
 	which = which.split("-");
 	let now = [parseInt(which[0]), parseInt(which[1]), parseInt(which[2])];
 	let loaded = false;
+	let renderer = new marked.Renderer();
+	renderer.image = function (href, title, text) {
+		return `<img alt="${text}" class="in-art" src="${(href.indexOf("//") != -1)? href: "sources/images/" + href}">`;
+	}
+	marked.setOptions({
+		highlight: (code) => {
+			return hljs.highlightAuto(code).value;
+		},
+		renderer: renderer
+	});
 	for (article of articlesList) {
 		// 使用 Array.toString() == Array 可能比较简单
 		if (article.time.toString() == now) {
@@ -60,7 +70,7 @@ function loadArticle(articlesList, which) {
 			document.title = `个人小站 - ${article.title}`;
 			loaded = true;
 			for (tag of article.tags) {
-				$("#article-tags").append(`<a href="articles.html?tag=${tag}"><span class="badge rounded-pill bg-primary">${tag}</span></a>`);
+				$("#article-tags").append(`<a href="article.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`);
 			}
 			$.ajax({
 				"url": getArticleFileName(...now),
@@ -113,27 +123,6 @@ function onImagesList(callback, ...args) {
 	});
 }
 
-function showArticlesList(articlesList) {
-	let count = 0;
-	let date = articlesList[0].time.slice(0, 2);
-	let html = "";
-	$("#list").append(`<h5>${date[0]}年${date[1]}月</h5>`);
-	for (article of articlesList) {
-		if (count > 6) {
-			break;
-		}
-		if (date.toString() != article.time.slice(0, 2)) {
-			date = article.time.slice(0, 2);
-			$("#list").append("<ul>" + html + "</ul>");
-			$("#list").append(`<div><h5>${date[0]}年${date[1]}月</h5>`);
-			html = "";
-			count ++;
-		}
-		html += `<li>${getArticleFileName(...article.time, false)} &rsaquo;&rsaquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`;
-	}
-	$("#list").append("<ul>" + html + "</ul>");
-}
-
 function showDailyImage() {
 	let now = new Date();
 	$.ajax({
@@ -180,13 +169,17 @@ function showQuote() {
 }
 
 function showRecentArticle(articlesList) {
+	let count = 0;
 	let now = new Date();
 	for (article of articlesList) {
 		let date = new Date(article.time[0], article.time[1] - 1, article.time[2]);
-		// 下面这个 0 < now - date < 2592000000 看起来没有必要, 但确实很有必要存在
 		// 2592000000s 是30天
 		if ((0 < now - date) && (now - date < 2592000000)) {
 			$("#recent-articles").append(`<li>${getArticleFileName(...article.time, false)} &rsaquo;&rsaquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`);
+			count ++;
+			if (count >= 8) {
+				break;
+			}
 		}
 	}
 }
@@ -208,4 +201,3 @@ function showToday() {
 	$("#today").html($("#today").html() + `<br>UTC时间：${now}。`);
 	$("#today-wikipedia").html(`<a href="https://zh.wikipedia.org/wiki/${now.getMonth() + 1}月${now.getDate()}日">维基百科：${now.getMonth() + 1}月${now.getDate()}日</a>`);
 }
-
