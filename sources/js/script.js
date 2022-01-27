@@ -161,7 +161,7 @@ function showMathsTips() {
 function showQuote() {
 	let now = new Date();
 	let index = (now.getDate() + now.getHours()) % quotes.length;
-	if (now.getMonth() == 0 && now.getDate() == 1 && now.getHours() == 0) {
+	if (now.getMonth() == 0 && now.getDate() == 1) {
 		$("#quote").html(`<b>宋&middot;王安石</b>：爆竹声中一岁除，春风送暖入屠苏。`);
 	} else {
 		$("#quote").html(`<b>${quotes[index][1]}</b>：${quotes[index][0]}`);
@@ -175,7 +175,7 @@ function showRecentArticle(articlesList) {
 		let date = new Date(article.time[0], article.time[1] - 1, article.time[2]);
 		// 2592000000s 是30天
 		if ((0 < now - date) && (now - date < 2592000000)) {
-			$("#recent-articles").append(`<li>${getArticleFileName(...article.time, false)} &rsaquo;&rsaquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`);
+			$("#recent-articles").append(`<li>${getArticleFileName(...article.time, false)} &raquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`);
 			count ++;
 			if (count >= 8) {
 				break;

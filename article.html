@@ -13,6 +13,7 @@
 		<script src="sources/js/search.js"></script>
 		<script>
 			$(document).ready(() => {
+				onArticlesList(setFirstArticleTime);
 				if (location.search.length == 0) {
 					onArticlesList(showArticlesList);
 				} else if (location.search == "?help") {
@@ -57,12 +58,6 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td scope="row">count</td>
-								<td>每页显示几篇文章</td>
-								<td>数字</td>
-								<td>20</td>
-							</tr>
-							<tr>
 								<td scope="row">endDate</td>
 								<td>截止日期</td>
 								<td>日期（用<code>"-"</code>分割的年月日）</td>
@@ -78,7 +73,7 @@
 								<td scope="row">startDate</td>
 								<td>开始日期</td>
 								<td>日期（用<code>"-"</code>分割的年月日）</td>
-								<td>当前日期</td>
+								<td>第一篇文章的写作日期</td>
 							</tr>
 							<tr>
 								<td scope="row">tag</td>
@@ -98,6 +93,12 @@
 				<p>每一个选项使用<code>"&amp;"</code>分割，使用<code>选项名=值</code>赋值。</p>
 			</div>
 			<div id="list"></div>
+			<div class="d-none" id="pagination-container">
+				<nav>
+					<ul class="pagination pagination-sm justify-content-center" id="pagination">
+					</ul>
+				</nav>
+			</div>
 		</div>
 		<div class="split"></div>
 		<p class="copyleft-note">
