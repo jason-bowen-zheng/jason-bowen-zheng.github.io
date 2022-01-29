@@ -33,6 +33,7 @@ const quotes = [
 	["君不见，黄河之水天上来，奔流到海不复回。", "唐&middot;李白"],
 	["海纳百川，有容乃大；壁立千仞，无欲则刚。", "清&middot;林则徐"],
 	["鸟之将死，其鸣也哀；人之将死，其言也善。", "春秋&middot;曾参"],
+	["人类的伟大是勇气的伟大，人类的赞歌是勇气的赞歌。", "全体人类"],
 	["安得广厦千万间，大庇天下寒士俱欢颜，风雨不动安如山。", "唐&middot;杜甫"]
 ];
 
@@ -145,7 +146,7 @@ function showLatestArticle(articlesList) {
 		},
 		"success": (text) => {
 			result = marked.parse(text);
-			$("#article-content").html(result.slice(0, result.indexOf("</p>") + 4));
+			$("#article-content").html(result.slice(result.indexOf("<p>"), result.indexOf("</p>") + 4));
 			$("#time").text(getArticleFileName(...articlesList[0].time, false));
 			$("#article-link").attr("href", `articles.html?${getArticleFileName(...articlesList[0].time, false)}`);	
 		}

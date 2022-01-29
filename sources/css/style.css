@@ -89,7 +89,7 @@ table > * > tr > td.none {
 	background-color: #eeeeee;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 576px) {
 
 	.pay-attention {
 		background-color: #f8f9fa;
@@ -111,7 +111,7 @@ table > * > tr > td.none {
 
 }
 
-@media (min-width: 767px) {
+@media (min-width: 576px) {
 
 	.big-item {
 		width: 60%;

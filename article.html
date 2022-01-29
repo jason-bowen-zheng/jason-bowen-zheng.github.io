@@ -14,11 +14,17 @@
 		<script>
 			$(document).ready(() => {
 				onArticlesList(setFirstArticleTime);
+				setSelectOptions();
 				if (location.search.length == 0) {
 					onArticlesList(showArticlesList);
 				} else if (location.search == "?help") {
 					document.title = "个人小站 - 文章搜索选项帮助";
 					$("#help").removeClass("d-none");
+				} else if (location.search == "?search") {
+					$("#search-modal").removeClass("fade");
+					(new bootstrap.Modal($("#search-modal"))).show();
+					$("#search-modal").addClass("fade");
+					onArticlesList(showArticlesList);
 				} else {
 					setOption();
 					if (onlyPage) {
@@ -33,10 +39,40 @@
 			<div class="container-fluid">
 				<a class="navbar-brand" href=".">个人小站</a>
 				<form class="d-flex">
+					<a class="btn" data-bs-toggle="modal" data-bs-target="#search-modal">
+						<span class="bi bi-search" style="font-size: 120%"></span>
+					</a>
 					<a class="btn" href="upload.html">
 						<span class="bi bi-plus-circle" style="font-size: 120%"></span>
 					</a>
 				</form>
+			</div>
+		</div>
+		<div class="modal fade" id="search-modal" data-bs-backdrop="static">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">搜索</h5>
+						<button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form onsubmit="return false;">
+							<div class="mb-3">
+								<label class="form-label" for="text">文章内容：</label>
+								<input class="form-control" id="text" name="text" placeholder="出现在文章或标题中的字词句" type="text" required>
+							</div>
+							<div class="mb-3">
+								<label class="form-label" for="tags">标签：</label>
+								<select class="form-control" id="tags" multiple>
+								</select>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">取消</button>
+						<button class="btn btn-primary">搜索</button>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="content">

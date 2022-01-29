@@ -1,4 +1,5 @@
 let firstArticle = new Date();
+let tags = [];
 let onlyPage = true;
 let option = new Map(Object.entries({
 	endDate: new Date(),
@@ -7,6 +8,16 @@ let option = new Map(Object.entries({
 	tag: [],
 	text: ""
 }));
+
+onArticlesList((l) => {
+	for (item of l) {
+		for (tag of item.tags) {
+			if (tags.indexOf(tag) == -1) {
+				tags.push(tag);
+			}
+		}
+	}
+});
 
 function getMaxPage(list) {
 	// 以6个月为界分页, 返回所分的页数
@@ -24,8 +35,8 @@ function getMaxPage(list) {
 
 function setFirstArticleTime(articlesList) {
 	let i = articlesList.length - 1;
-	time = articlesList[i].time;
-	firstArticle = new Date(time[0], time[1] - 1, time[2]);
+	let time = articlesList[i].time;
+	let firstArticle = new Date(time[0], time[1] - 1, time[2]);
 	option.set("startDate", firstArticle);
 }
 
@@ -61,6 +72,12 @@ function setOption() {
 			value = value.split(",");
 		}
 		option.set(key, value);
+	}
+}
+
+function setSelectOptions() {
+	for (tag of tags) {
+		$("#tags").append(`<option value="${tag}">${tag}</option>`);
 	}
 }
 
