@@ -190,14 +190,19 @@ function showToday() {
 	let num2name = ["日", "一", "二", "三", "四", "五", "六"];
 	$("#today").html(`今天是${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日`);
 	$("#today").html($("#today").html() + `（星期${num2name[now.getDay()]}），`);
+	let lunar = calendar.solar2lunar();
+	$("#today").html($("#today").html() + `农历${lunar.gzYear}年${lunar.IMonthCn}${lunar.IDayCn}`);
+	if (lunar.lunarFestival || lunar.Term) {
+		$("#today").html($("#today").html() + "（" + (lunar.lunarFestival || lunar.Term) + "）");
+	}
 	let thisYear = new Date(now.getFullYear(), 0);
 	let nextYear = new Date(now.getFullYear() + 1, 0);
 	// 一年过了一半了吗?
 	if (thisYear - now < nextYear - now) {
 		// 86400000s 是一天
-		$("#today").html($("#today").html() + `是今年的第${parseInt((now - thisYear) / 86400000 + 1)}天。`);
+		$("#today").html($("#today").html() + `，是今年的第${parseInt((now - thisYear) / 86400000 + 1)}天。`);
 	} else {
-		$("#today").html($("#today").html() + `距明年还有${parseInt((nextYear - now) / 86400000 + 1)}天。`);
+		$("#today").html($("#today").html() + `，距明年还有${parseInt((nextYear - now) / 86400000 + 1)}天。`);
 	}
 	$("#today").html($("#today").html() + `<br>UTC时间：${now}。`);
 	$("#today-wikipedia").html(`<a href="https://zh.wikipedia.org/wiki/${now.getMonth() + 1}月${now.getDate()}日">维基百科：${now.getMonth() + 1}月${now.getDate()}日</a>`);
