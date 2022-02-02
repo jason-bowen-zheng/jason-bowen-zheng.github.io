@@ -153,12 +153,4 @@ table > * > tr > td.none {
 		border-radius: 0.25rem;
 	}
 
-	pre#license {
-		margin: 0 auto;
-		margin-left: 10px;
-		margin-right: 10px;
-		padding: 4px;
-		font-size: 120%;
-	}
-
 }

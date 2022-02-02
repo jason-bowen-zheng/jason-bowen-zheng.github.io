@@ -64,7 +64,7 @@ function loadArticle(articlesList, which) {
 		},
 		renderer: renderer
 	});
-	for (article of articlesList) {
+	for (let article of articlesList) {
 		// 使用 Array.toString() == Array 可能比较简单
 		if (article.time.toString() == now) {
 			$("#article-title").text(article.title);
@@ -145,7 +145,7 @@ function showLatestArticle(articlesList) {
 			$("#article-content").html(`<span class="text-muted">文件未成功读取，错误代码：${xhr.status}。</span>`);
 		},
 		"success": (text) => {
-			result = marked.parse(text);
+			let result = marked.parse(text);
 			$("#article-content").html(result.slice(result.indexOf("<p>"), result.indexOf("</p>") + 4));
 			$("#time").text(getArticleFileName(...articlesList[0].time, false));
 			$("#article-link").attr("href", `articles.html?${getArticleFileName(...articlesList[0].time, false)}`);	
@@ -172,7 +172,7 @@ function showQuote() {
 function showRecentArticle(articlesList) {
 	let count = 0;
 	let now = new Date();
-	for (article of articlesList) {
+	for (let article of articlesList) {
 		let date = new Date(article.time[0], article.time[1] - 1, article.time[2]);
 		// 2592000000s 是30天
 		if ((0 < now - date) && (now - date < 2592000000)) {
@@ -205,5 +205,8 @@ function showToday() {
 		$("#today").html($("#today").html() + `，距明年还有${parseInt((nextYear - now) / 86400000 + 1)}天。`);
 	}
 	$("#today").html($("#today").html() + `<br>UTC时间：${now}。`);
-	$("#today-wikipedia").html(`<a href="https://zh.wikipedia.org/wiki/${now.getMonth() + 1}月${now.getDate()}日">维基百科：${now.getMonth() + 1}月${now.getDate()}日</a>`);
+	$("#today-lists").html(`<li><a href="https://zh.wikipedia.org/wiki/${now.getMonth() + 1}月${now.getDate()}日">维基百科：${now.getMonth() + 1}月${now.getDate()}日</a></li>`);
+	if (lunar.lunarFestival || lunar.Term) {
+		$("#today-lists").html($("#today-lists").html() + `<li><a href="https://zh.wikipedia.org/wiki/${lunar.lunarFestival || lunar.Term}">维基百科：${lunar.lunarFestival || lunar.Term}</li>`);
+	}
 }

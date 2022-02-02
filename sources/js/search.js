@@ -10,7 +10,7 @@ let option = new Map(Object.entries({
 }));
 
 onArticlesList((l) => {
-	for (item of l) {
+	for (let item of l) {
 		for (tag of item.tags) {
 			if (tags.indexOf(tag) == -1) {
 				tags.push(tag);
@@ -22,7 +22,7 @@ onArticlesList((l) => {
 function getMaxPage(list) {
 	// 以6个月为界分页, 返回所分的页数
 	let count = 1; i = 0; date = list[0].time.slice(0, 2);
-	for (article of list) {
+	for (let article of list) {
 		if (date.toString() != article.time.slice(0, 2)) {
 			i ++;
 		}
@@ -41,7 +41,7 @@ function setFirstArticleTime(articlesList) {
 }
 
 function setOption() {
-	for (item of location.search.slice(1).split("&")) {
+	for (let item of location.search.slice(1).split("&")) {
 		let key = decodeURIComponent(item.split("=", 1)[0]);
 		let value = decodeURIComponent(item.slice(key.length + 1));
 		if (option.get(key) == undefined) {
@@ -73,16 +73,21 @@ function setOption() {
 		}
 		option.set(key, value);
 	}
+	if (option.get("startDate") < option.get("endDate")) {
+		let d = option.get("startDate");
+		option.set("startDate", option.get("endDate"));
+		option.set("endDate", d);
+	}
 }
 
 function setSelectOptions() {
-	for (tag of tags) {
+	for (let tag of tags) {
 		$("#tags").append(`<option value="${tag}">${tag}</option>`);
 	}
 }
 
 function showArticlesList(articlesList) {
-	// 挺复杂的一个函数, 下面会慢慢解释的
+	// 挺复~杂~的一个函数, 下面会慢慢解释的
 	let count = 0, i = 0;
 	// 是否开始显示文章列表了呢?
 	// 在第一页的时候总是为true
@@ -100,7 +105,7 @@ function showArticlesList(articlesList) {
 	if (canShow) {
 		$("#list").append(`<h5>${date[0]}年${date[1]}月</h5>`);
 	}
-	for (article of articlesList) {
+	for (let article of articlesList) {
 		if (date.toString() != article.time.slice(0, 2)) {
 			// 这个if和上面的getMaxPage差不多
 			if (!canShow) {
