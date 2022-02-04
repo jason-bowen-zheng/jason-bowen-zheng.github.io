@@ -178,7 +178,7 @@ function showRecentArticle(articlesList) {
 		if ((0 < now - date) && (now - date < 2592000000)) {
 			$("#recent-articles").append(`<li>${getArticleFileName(...article.time, false)} &raquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`);
 			count ++;
-			if (count >= 8) {
+			if (count >= 5) {
 				break;
 			}
 		}
