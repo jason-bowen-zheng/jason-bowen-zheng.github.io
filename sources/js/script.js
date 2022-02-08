@@ -90,7 +90,9 @@ function loadArticle(articlesList, which) {
 							id: getArticleFileName(...now, false),
 							createIssueManually: true
 						});
-						gitalk.render("gitalk-container");
+						if (location.href.indexOf(".github.io") != -1) {
+							gitalk.render("gitalk-container");
+						}
 					}
 				}
 			});
