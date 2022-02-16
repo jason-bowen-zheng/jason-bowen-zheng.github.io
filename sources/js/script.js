@@ -26,8 +26,10 @@ const quotes = [
 	["无边落木萧萧下，不尽长江滚滚来。", "唐&middot;杜甫"],
 	["不识庐山真面目，只缘身在此山中。", "宋&middot;苏轼"],
 	["长风破浪会有时，直挂云帆济沧海。", "唐&middot;李白"],
+	["Life likes a dream and I should carpe diem!", "作者"],
 	["先天下之忧而忧，后天下之乐而乐。", "宋&middot;范仲淹"],
 	["人生自古谁无死，留取丹心照汗青。", "宋&middot;文天祥"],
+	["以声之色，塑花之形；将你之名，刻于我心。", "《声之形》"],
 	["世界是你们的，也是我们的，但是归根结底是你们的。", "毛泽东"],
 	["人有悲欢离合，月有阴晴圆缺，此事古难全。", "宋&middot;苏轼"],
 	["君不见，黄河之水天上来，奔流到海不复回。", "唐&middot;李白"],
@@ -57,7 +59,10 @@ function loadArticle(articlesList, which) {
 	let renderer = new marked.Renderer();
 	renderer.image = function (href, title, text) {
 		return `<img alt="${text}" class="in-art" src="${(href.indexOf("//") != -1)? href: "sources/images/" + href}">`;
-	}
+	};
+	renderer.hr = function () {
+		return "<div class='split' style='width: 50%'></div>";
+	};
 	marked.setOptions({
 		highlight: (code) => {
 			return hljs.highlightAuto(code).value;
