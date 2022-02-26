@@ -9,6 +9,7 @@ let option = new Map(Object.entries({
 	text: ""
 }));
 
+// 将所有的文章标签存放至tags
 onArticlesList((l) => {
 	for (let item of l) {
 		for (tag of item.tags) {
@@ -105,9 +106,9 @@ function showArticlesList(articlesList) {
 	if (canShow) {
 		$("#list").append(`<h5>${date[0]}年${date[1]}月</h5>`);
 	}
+	// 这个for和上面的getMaxPage差不多
 	for (let article of articlesList) {
 		if (date.toString() != article.time.slice(0, 2)) {
-			// 这个if和上面的getMaxPage差不多
 			if (!canShow) {
 				i ++;
 				if (i >= 6) {
