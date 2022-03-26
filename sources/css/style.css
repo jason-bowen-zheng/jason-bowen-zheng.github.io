@@ -35,6 +35,10 @@ blockquote {
 	border-left: .25em solid #dee2e6;
 }
 
+div#article-container > h2 {
+	text-align: center;
+}
+
 img.in-art {
 	max-width: 100%;
 	box-sizing: initial;

@@ -11,11 +11,12 @@ const mathsTips = [
 	"高次不等式用穿针引线法。",
 	"函数中的自变量可以在取值范围内换成任意的值或式，甚至是一坨屎。",
 	"慎用多次基本不等式，除非等号成立条件相同。",
-	"对数不等式&#215;1。",
+	"对数不等式&times;1。",
 	"狗都不想用基本不等式！",
 	"等式有解：标准化叙述，参变分离，求变量边的值域。",
 	"等式恒成立：标准化叙述，分清参变，化为<b>f(x)=0</b>，将所有变量归类合并得系数，系数全为零。",
-	"三角比！单位圆！变角公式！（大哭）"
+	"sin<sup>2</sup><i>&alpha;</i>+cos<sup>2</sup><i>&alpha;</i>=1",
+	"奇变偶不变，符号看象限。"
 ];
 
 const quotes = [
@@ -190,6 +191,9 @@ function showRecentArticle(articlesList) {
 				break;
 			}
 		}
+	}
+	if (count == 0) {
+		$("#recent-articles").append(`<li>${getArticleFileName(...article.time, false)} &raquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`);
 	}
 }
 
