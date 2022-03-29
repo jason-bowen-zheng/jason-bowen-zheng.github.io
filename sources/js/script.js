@@ -188,7 +188,7 @@ function showRecentArticle(articlesList) {
 			$("#recent-articles").append(`<li>${getArticleFileName(...article.time, false)} &raquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`);
 			count ++;
 			if (count >= 5) {
-				break;
+				return;
 			}
 		}
 	}
