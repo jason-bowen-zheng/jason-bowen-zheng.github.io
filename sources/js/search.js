@@ -37,7 +37,7 @@ function getMaxPage(list) {
 function setFirstArticleTime(articlesList) {
 	let i = articlesList.length - 1;
 	let time = articlesList[i].time;
-	let firstArticle = new Date(time[0], time[1] - 1, time[2]);
+	let firstArticle = new Date(time);
 	option.set("startDate", firstArticle);
 }
 
@@ -45,6 +45,7 @@ function setOption() {
 	for (let item of location.search.slice(1).split("&")) {
 		let key = decodeURIComponent(item.split("=", 1)[0]);
 		let value = decodeURIComponent(item.slice(key.length + 1));
+		console.log(`${key}=${value}`);
 		if (option.get(key) == undefined) {
 			continue;
 		}
@@ -55,7 +56,8 @@ function setOption() {
 			value = Math.max(parseInt(value) || 1, 1);
 		} else if ((key == "startDate") || (key == "endDate")) {
 			let date = value.split("-");
-			value = new Date(date[0], date[1] - 1, date[2]);
+			value = new Date(date);
+			console.log(value);
 			if (value.toString() == "Invalid Date") {
 				if (key == "startDate") {
 					value = firstArticle;
@@ -74,7 +76,7 @@ function setOption() {
 		}
 		option.set(key, value);
 	}
-	if (option.get("startDate") < option.get("endDate")) {
+	if (option.get("startDate") > option.get("endDate")) {
 		let d = option.get("startDate");
 		option.set("startDate", option.get("endDate"));
 		option.set("endDate", d);
@@ -83,7 +85,7 @@ function setOption() {
 
 function setSelectOptions() {
 	for (let tag of tags) {
-		$("#tags").append(`<option value="${tag}">${tag}</option>`);
+		$("#searchModal-tags").append(`<option value="${tag}">${tag}</option>`);
 	}
 }
 
@@ -157,4 +159,56 @@ function showArticlesList(articlesList) {
 		$("#pagination").append(`<li class="page-item ${(now == pages)? "disabled": ""}"><a class="page-link" href="${(now == pages)? "javascript:void(0)": "article.html?page=" + (now + 1)}">&raquo;</a></li>`);
 		$("#pagination-container").removeClass("d-none");
 	}
+}
+
+function searchArticles(articlesList) {
+	let canAdd = false;
+	let html = "";
+	for (let article of articlesList) {
+		canAdd = true;
+		// 匹配startDate与endDate
+		if (option.get("startDate") <= (new Date(article.time))) {
+			if (option.get("endDate") >= (new Date(article.time))) {
+				canAdd = true;
+			} else {
+				canAdd = false;
+			}
+		} else {
+			canAdd = false;
+		}
+		// 匹配tag
+		for (let tag of option.get("tag")) {
+			if (article.tags.indexOf(tag) == -1) {
+				canAdd = false;
+				break;
+			}
+		}
+		if (canAdd){
+			html += `<li>${getArticleFileName(...article.time, false)} &raquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`
+		}
+	}
+	if (html.length > 0) {
+		$("#list").append(html);
+	}
+}
+
+function submitSearchForm() {
+	let options = [];
+	let text = encodeURIComponent($("#searchModal-text").val());
+	if (text.length > 0) {
+		options.push(`text=${text}`);
+	}
+	let tag = $("#searchModal-tags").val();
+	if (tag.length > 0) {
+		options.push(`tag=${tag}`);
+	}
+	let startDate = $("#searchModal-start-date").val();
+	if (startDate.length > 0) {
+		options.push(`startDate=${startDate}`);
+	}
+	let endDate = $("#searchModal-end-date").val();
+	if (endDate.length > 0) {
+		options.push(`endDate=${endDate}`);
+	}
+	location.href=`article.html?${options.join("&")}`;
 }

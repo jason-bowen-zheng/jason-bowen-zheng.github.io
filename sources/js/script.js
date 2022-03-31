@@ -81,6 +81,7 @@ function loadArticle(articlesList, which) {
 				$("#article-tags").append(`<a href="article.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`);
 			}
 			$.ajax({
+				"async": false,
 				"url": getArticleFileName(...now),
 				"error": (xhr) => {
 					$("#article-content").html(`<span class="text-muted">文件未成功读取，错误代码：${xhr.status}。</span>`);
