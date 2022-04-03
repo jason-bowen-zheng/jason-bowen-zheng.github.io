@@ -39,6 +39,15 @@ div#article-container > h2 {
 	text-align: center;
 }
 
+div#article-container > h3 {
+	border-bottom: 1px solid #cbcdce;
+	width: 100%;
+}
+
+div#article-container > h5 {
+	padding-left: 16px;
+}
+
 img.in-art {
 	max-width: 100%;
 	box-sizing: initial;

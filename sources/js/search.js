@@ -183,12 +183,36 @@ function searchArticles(articlesList) {
 				break;
 			}
 		}
+		// 匹配text
+		if (article.title.indexOf(option.get("text")) == -1) {
+			canAdd = false;
+		}
+		if (option.get("text").length > 0) {
+			$.ajax({
+				"async": false,
+				"url": getArticleFileName(...article.time),
+				"success": (text) => {
+					text = text.replace(/^#{1,6}\s*/gm, "")
+						.replace(/\$\$.+?\$\$/g, "").replace(/::.+?::/g, "")
+						.replace(/^\s*-\s*/gm, "").replace(/^\d+\.\s*/gm, "")
+						.replace(/^\s*>*\s*/gm, "").replace(/\*\*\*?/g, "")
+						.replace(/\[(.+?)\]\(.+?\)/g, "$1")
+						.replace(/<div.+?>/g, "").replace(/<\/div>/g, "")
+						.replace(/&.+?;/g, "").replace(/\s/g, "");
+					if (text.indexOf(option.get("text")) != -1) {
+						canAdd = true;
+					}
+				}
+			});
+		}
 		if (canAdd){
 			html += `<li>${getArticleFileName(...article.time, false)} &raquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`
 		}
 	}
 	if (html.length > 0) {
 		$("#list").append(html);
+	} else {
+		$("#list").append("<p align='center' class='text-muted' style='font-size: 500%'>...</p>");
 	}
 }
 

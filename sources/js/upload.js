@@ -45,7 +45,7 @@ function uploadFile(imagesList) {
 		imagesList.push({"name": $("#name").val(), "description": $("#desp").val()});
 		// 因为imagesList包含Unicode字符, btoa不能转换
 		// 故只能使用FileReader.readAsDataURL(折中方法)
-		let blob = new Blob([JSON.stringify(imagesList)]);
+		let blob = new Blob([JSON.stringify(imagesList, null, "\t")]);
 		let reader = new FileReader();
 		reader.readAsDataURL(blob);
 		reader.onload = function() {
