@@ -126,8 +126,14 @@ table > * > tr > td.none {
 
 @media (min-width: 576px) {
 
-	.big-item {
-		width: 60%;
+	.left-column {
+		float: left;
+		width: 48%;
+	}
+
+	.right-column {
+		float: right;
+		width: 46%;
 	}
 
 	.pay-attention {
@@ -139,14 +145,6 @@ table > * > tr > td.none {
 		margin-left: 15%;
 		margin-right: 15%;
 		padding: 2px;
-	}
-
-	.small-item {
-		width: 40%;
-	}
-
-	.xsmall-item {
-		width: 30%;
 	}
 
 	div#list {

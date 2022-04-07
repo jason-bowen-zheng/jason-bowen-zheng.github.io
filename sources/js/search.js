@@ -92,7 +92,7 @@ function setSelectOptions() {
 function showArticlesList(articlesList) {
 	// 挺复~杂~的一个函数, 下面会慢慢解释的
 	let count = 0, i = 0;
-	// 是否开始显示文章列表了呢?
+	// 是否开始显示博客列表了呢?
 	// 在第一页的时候总是为true
 	let canShow = (onlyPage && (option.get("page") == 1))? true: false;
 	// 有些人会自己输入URL, 极有可能"?"后面的东西是随便输入的, 比如"?page=<一个很大的数字>"
@@ -146,7 +146,7 @@ function showArticlesList(articlesList) {
 				start = now - 2; end = now + 2;
 			} else if (now - 2 < 1) {
 				start = 1; end = 5;
-			} else if (now + 2 > pagew) {
+			} else if (now + 2 > pages) {
 				start = pages - 5; end = pages;
 			}
 		} else {
@@ -192,6 +192,7 @@ function searchArticles(articlesList) {
 				"async": false,
 				"url": getArticleFileName(...article.time),
 				"success": (text) => {
+					// 清除各种Markdown标记
 					text = text.replace(/^#{1,6}\s*/gm, "")
 						.replace(/\$\$.+?\$\$/g, "").replace(/::.+?::/g, "")
 						.replace(/^\s*-\s*/gm, "").replace(/^\d+\.\s*/gm, "")

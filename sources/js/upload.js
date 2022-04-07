@@ -12,7 +12,7 @@ function canUpload() {
 function uploadFile(imagesList) {
 	// 使用GitHub API上传图像至GitHub
 	// 真的非常复杂, 以至于下面的uploadImage才是用来上传文件的
-	// 由于Javascript的某些函数(如btoa, encodeURI)功能受限, 故采用折中方法
+	// 由于Javascript的某些函数(如btoa, encodeURI)功能受限, 故采用折中且麻烦方法
 	let baseURL = "https://api.github.com/repos/jason-bowen-zheng/jason-bowen-zheng.github.io";
 	let failed = false;
 	let date = new Date();
