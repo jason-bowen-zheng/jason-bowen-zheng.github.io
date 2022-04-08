@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>个人小站</title>
-		<meta charset="utf-8" content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+		<meta charset="utf-8" content="width=device-width, initial-scale=1" name="viewport">
 		<link rel="stylesheet" href="sources/css/style.css">
 		<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -21,10 +21,10 @@
 				onArticlesList(showRecentArticle);
 				setInterval(showToday, 1000);
 				$("#btn-search").on("click", () => {
-					submitSearchForm();
+					location.href = `article.html?text=${encodeURIComponent($("#search-text").val())}`;
 				});
 				$("#btn-search2").on("click", () => {
-					location.href = `article.html?text=${encodeURIComponent($("#search-text").val())}`;
+					submitSearchForm();
 				});
 			});
 		</script>
@@ -70,7 +70,7 @@
 					</div>
 					<div class="modal-footer">
 						<button class="btn btn-outline-secondary" type="button" data-bs-dismiss="modal">取消</button>
-						<button class="btn btn-primary" id="btn-search">搜索</button>
+						<button class="btn btn-primary" id="btn-search2">搜索</button>
 					</div>
 				</div>
 			</div>
@@ -83,14 +83,68 @@
 					<span class="bi bi-emoji-smile-upside-down"></span>
 				</p>
 			</div>
-			<div class="left-column">
-				左边栏
-			</div>
-			<div class="right-column">
-				右边栏
+			<div class="main-page">
+				<div class="left-column">
+					<div class="card mb-3">
+						<div class="card-body">
+							<div class="maths-tips-section mb-3">
+								<div class="d-flex align-items-center">
+									<div class="flex-shrink-0">
+										<span class="bi bi-lightbulb svg-icon"></span>
+									</div>
+									<div class="flex-grow-1 ms-3">
+										<h2 class="card-title">数学小贴士</h2>
+										<p class="card-text" id="maths-tips" style="font-size: 120%;"></p>
+									</div>
+								</div>
+							</div>
+							<div class="split" style="width: 75%;"></div>
+							<div class="quote-section mt-3">
+								<div class="d-flex align-items-center">
+									<div class="flex-shrink-0">
+										<span class="bi bi-chat svg-icon"></span>
+									</div>
+									<div class="flex-grow-1 ms-3">
+										<h2 class="card-title">名人名言</h2>
+										<p class="card-text" id="quote" style="font-size: 120%;"></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="daily-image-section">
+						<div class="card daily-image-card">
+							<img class="card-img-top" id="daily-image">
+							<div class="card-body">
+								<h2 class="card-title">每日图片</h2>
+								<p class="card-text" id="img-desp" style="font-size: 120%;"></p>
+							</div>
+					</div>
+				</div>
+				</div>
+				<div class="right-column">
+					<div class="right-column-top">
+						<div class="m-3">
+							<div class="search-blog-section">
+								<h2>搜索博客</h2>
+								<input class="form-control" id="search-text" placeholder="搜索博客..." type="text">
+								<div class="mt-2 mb-4 d-grid gap-2 d-flex justify-content-end">
+									<button class="btn btn-outline-primary" id="btn-search">搜索博客</button>
+									<div class="m-1"></div>
+									<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#search-modal">更多...</button>
+								</div>
+							</div>
+							<div class="today-section">
+								<h2>今天...</h2>
+								<p id="today"></p>
+								<ul id="today-lists"></ul>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div style="clear: both;"></div>
+		<div style="clear: both; margin-bottom: 10px;"></div>
 		<div class="split"></div>
 		<p class="copyleft-note">
 		非特殊说明，本站的全部文字及图像在<a href="http://creativecommons.org/licenses/by-sa/4.0">知识共享 署名-相同方式共享 4.0协议</a>之条款下提供。

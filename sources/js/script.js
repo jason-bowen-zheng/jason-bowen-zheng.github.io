@@ -28,6 +28,7 @@ const quotes = [
 	["无边落木萧萧下，不尽长江滚滚来。", "唐&middot;杜甫"],
 	["不识庐山真面目，只缘身在此山中。", "宋&middot;苏轼"],
 	["长风破浪会有时，直挂云帆济沧海。", "唐&middot;李白"],
+	// 我认为的"人生如梦，一樽还酹江月"英语翻译, 还很押韵呢!
 	["Life likes a dream and I should carpe diem!", "作者"],
 	["先天下之忧而忧，后天下之乐而乐。", "宋&middot;范仲淹"],
 	["人生自古谁无死，留取丹心照汗青。", "宋&middot;文天祥"],
@@ -53,7 +54,7 @@ function getArticleFileName(year, month, day, fullPath=true) {
 
 function loadArticle(articlesList, which) {
 	// 用于在articles.html显示文章的函数, 应该是onArticlesList的回调函数
-	// 对which(哪篇文章)的检查比较松: 2022-01-08和2022-1-8都能定位到同一篇文章(在网页中为了统一都会补零)
+	// 对which(哪篇文章)的检查比较松: 2022-01-08和2022-1-8(以及任何能被Date构造函数识别的字符串)都能定位到同一篇文章(在网页中为了统一都会补零)
 	// 年月日之间必须是用短横线("-")分割的
 	which = which.split("-");
 	let now = [parseInt(which[0]), parseInt(which[1]), parseInt(which[2])];
@@ -141,8 +142,8 @@ function showDailyImage() {
 		"success": (list) => {
 			let index = (now.getDate() + now.getHours()) % list.length;
 			$("#daily-image").attr("src", `sources/images/${list[index].name}`);
-			$("#img-desp").html(list[index].description || "无描述");
 			$("#daily-image").attr("alt", list[index].description);
+			$("#img-desp").html(list[index].description || "一幅没有描述的图片");
 		}
 	});
 }
