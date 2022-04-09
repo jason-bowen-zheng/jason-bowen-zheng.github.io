@@ -12,16 +12,15 @@
 		<script src="sources/js/search.js"></script>
 		<script>
 			$(document).ready(() => {
-				showQuote();
-				showToday();
 				showMathsTips();
+				showQuote();
+				onBlogsList(showLatestBlog);
 				showDailyImage();
+				showToday();
 				setSelectOptions();
-				onArticlesList(showLatestArticle);
-				onArticlesList(showRecentArticle);
 				setInterval(showToday, 1000);
 				$("#btn-search").on("click", () => {
-					location.href = `article.html?text=${encodeURIComponent($("#search-text").val())}`;
+					location.href = `blog.html?text=${encodeURIComponent($("#search-text").val())}`;
 				});
 				$("#btn-search2").on("click", () => {
 					submitSearchForm();
@@ -50,7 +49,7 @@
 					<div class="modal-body">
 						<form onsubmit="return false;">
 							<div class="mb-3">
-								<label class="form-label" for="text">文章内容：</label>
+								<label class="form-label" for="text">博客内容：</label>
 								<input class="form-control" id="searchModal-text" name="text" placeholder="出现在内容或标题中的字词句" type="text" required>
 							</div>
 							<div class="mb-3">
@@ -87,7 +86,7 @@
 				<div class="left-column">
 					<div class="card mb-3">
 						<div class="card-body">
-							<div class="maths-tips-section mb-3">
+							<div id="maths-tips-section">
 								<div class="d-flex align-items-center">
 									<div class="flex-shrink-0">
 										<span class="bi bi-lightbulb svg-icon"></span>
@@ -98,8 +97,8 @@
 									</div>
 								</div>
 							</div>
-							<div class="split" style="width: 75%;"></div>
-							<div class="quote-section mt-3">
+							<div class="mt-3 mb-3 split" style="width: 75%;"></div>
+							<div id="quote-section">
 								<div class="d-flex align-items-center">
 									<div class="flex-shrink-0">
 										<span class="bi bi-chat svg-icon"></span>
@@ -112,8 +111,25 @@
 							</div>
 						</div>
 					</div>
-					<div class="daily-image-section">
-						<div class="card daily-image-card">
+					<div id="latest-blog-section">
+						<div class="card mb-3">
+							<div class="card-body">
+								<h2 class="card-title mb-0" id="blog-title"></h2>
+								<div class="mb-3" id="blog-tags"></div>
+								<p class="card-text" id="blog-content"></p>
+								<div class="clearfix w-100" style="font-size: 80%;">
+									<span class="float-start text-muted card-text" id="blog-time"></span>
+									<div class="float-end card-text">
+										<a href="blog.html">全部博客</a>
+										<b>&middot;</b>
+										<a id="blog-link">阅读全文</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="daily-image-section">
+						<div class="card" id="daily-image-card">
 							<img class="card-img-top" id="daily-image">
 							<div class="card-body">
 								<h2 class="card-title">每日图片</h2>
@@ -123,20 +139,21 @@
 				</div>
 				</div>
 				<div class="right-column">
-					<div class="right-column-top">
-						<div class="m-3">
-							<div class="search-blog-section">
-								<h2>搜索博客</h2>
+					<div class="card">
+						<div class="card-body">
+							<div id="search-blog-section">
+								<h2 class="card-title">搜索博客</h2>
 								<input class="form-control" id="search-text" placeholder="搜索博客..." type="text">
-								<div class="mt-2 mb-4 d-grid gap-2 d-flex justify-content-end">
+								<div class="mt-2 d-grid gap-2 d-flex justify-content-end">
 									<button class="btn btn-outline-primary" id="btn-search">搜索博客</button>
 									<div class="m-1"></div>
 									<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#search-modal">更多...</button>
 								</div>
 							</div>
-							<div class="today-section">
-								<h2>今天...</h2>
-								<p id="today"></p>
+							<div class="mt-3 mb-3 split" style="width: 75%;"></div>
+							<div id="today-section">
+								<h2 class="card-title">今天...</h2>
+								<p class="card-text" id="today"></p>
 								<ul id="today-lists"></ul>
 							</div>
 						</div>
@@ -144,7 +161,7 @@
 				</div>
 			</div>
 		</div>
-		<div style="clear: both; margin-bottom: 10px;"></div>
+		<div class="clearfix"></div>
 		<div class="split"></div>
 		<p class="copyleft-note">
 		非特殊说明，本站的全部文字及图像在<a href="http://creativecommons.org/licenses/by-sa/4.0">知识共享 署名-相同方式共享 4.0协议</a>之条款下提供。

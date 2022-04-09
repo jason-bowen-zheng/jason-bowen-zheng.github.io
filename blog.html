@@ -13,13 +13,13 @@
 		<script src="sources/js/search.js"></script>
 		<script>
 			$(document).ready(() => {
-				onArticlesList(setFirstArticleTime);
+				onBlogsList(setFirstBlogTime);
 				setSelectOptions();
 				$("#btn-search").on("click", () => {
 					submitSearchForm();
 				});
 				if (location.search.length == 0) {
-					onArticlesList(showArticlesList);
+					onBlogsList(showBlogsList);
 				} else if (location.search == "?help") {
 					document.title = "个人小站 - 搜索选项帮助";
 					$("#help").removeClass("d-none");
@@ -27,13 +27,13 @@
 					$("#search-modal").removeClass("fade");
 					(new bootstrap.Modal($("#search-modal"))).show();
 					$("#search-modal").addClass("fade");
-					onArticlesList(showArticlesList);
+					onBlogsList(showBlogsList);
 				} else {
 					setOption();
 					if (onlyPage) {
-						onArticlesList(showArticlesList);
+						onBlogsList(showBlogsList);
 					} else {
-						onArticlesList(searchArticles);
+						onBlogsList(searchBlogs);
 					}
 				}
 			});
@@ -63,7 +63,7 @@
 					<div class="modal-body">
 						<form onsubmit="return false;">
 							<div class="mb-3">
-								<label class="form-label" for="text">文章内容：</label>
+								<label class="form-label" for="text">博客内容：</label>
 								<input class="form-control" id="searchModal-text" name="text" placeholder="出现在内容或标题中的字词句" type="text" required>
 							</div>
 							<div class="mb-3">
@@ -132,7 +132,7 @@
 							</tr>
 							<tr>
 								<td scope="row">text</td>
-								<td>文章或标题中包含的字符串</td>
+								<td>博客内容或标题中包含的字符串</td>
 								<td>字符串</td>
 								<td>空字符串</td>
 							</tr>

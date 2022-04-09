@@ -23,6 +23,11 @@
 	background-color: #dee2e6;
 }
 
+/*.right-column-top {
+	border: 1px solid rgba(0, 0, 0, 0.125);
+	border-radius: 0.25rem;
+}*/
+
 .svg-icon {
 	font-size: 150%;
 }
@@ -108,13 +113,8 @@ table > * > tr > td.none {
 
 @media (max-width: 720px) {
 
-	.daily-image-section {
-		display: none;
-	}
-
-	.daily-image-card {
-		margin: 0 auto;
-		width: 90%;
+	.right-column {
+		margin-top: 1rem;
 	}
 
 	.pay-attention {
@@ -158,18 +158,6 @@ table > * > tr > td.none {
 		width: 37%;
 	}
 
-	.right-column-top {
-		border: 1px solid #dee2e6;
-		border-radius: 0.25rem;
-		box-shadow: 0px 3px 3px #dee2e6;
-	}
-
-	.daily-image-card {
-		margin: 0 auto;
-		max-width: 450px;
-		width: 75%;
-	}
-
 	.pay-attention {
 		width: 70%;
 		background-color: #f8f9fa;
@@ -179,6 +167,12 @@ table > * > tr > td.none {
 		margin-left: 15%;
 		margin-right: 15%;
 		padding: 2px;
+	}
+	
+	#daily-image-card {
+		margin: 0 auto;
+		max-width: 450px;
+		width: 75%;
 	}
 
 	div#list {

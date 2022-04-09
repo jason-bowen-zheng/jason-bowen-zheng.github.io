@@ -1,4 +1,4 @@
-let firstArticle = new Date();
+let FirstBlog = new Date();
 let tags = [];
 let onlyPage = true;
 let option = new Map(Object.entries({
@@ -10,7 +10,7 @@ let option = new Map(Object.entries({
 }));
 
 // 将所有的文章标签存放至tags
-onArticlesList((l) => {
+onBlogsList((l) => {
 	for (let item of l) {
 		for (tag of item.tags) {
 			if (tags.indexOf(tag) == -1) {
@@ -23,8 +23,8 @@ onArticlesList((l) => {
 function getMaxPage(list) {
 	// 以6个月为界分页, 返回所分的页数
 	let count = 1; i = 0; date = list[0].time.slice(0, 2);
-	for (let article of list) {
-		if (date.toString() != article.time.slice(0, 2)) {
+	for (let blog of list) {
+		if (date.toString() != blog.time.slice(0, 2)) {
 			i ++;
 		}
 		if (i >= 6) {
@@ -34,11 +34,11 @@ function getMaxPage(list) {
 	return count;
 }
 
-function setFirstArticleTime(articlesList) {
-	let i = articlesList.length - 1;
-	let time = articlesList[i].time;
-	let firstArticle = new Date(time);
-	option.set("startDate", firstArticle);
+function setFirstBlogTime(blogsList) {
+	let i = blogsList.length - 1;
+	let time = blogsList[i].time;
+	let FirstBlog = new Date(time);
+	option.set("startDate", FirstBlog);
 }
 
 function setOption() {
@@ -60,13 +60,13 @@ function setOption() {
 			console.log(value);
 			if (value.toString() == "Invalid Date") {
 				if (key == "startDate") {
-					value = firstArticle;
+					value = FirstBlog;
 				} else {
 					value = new Date();
 				}
 			} else {
-				if ((key == "startDate") && (value < firstArticle)) {
-					value = firstArticle;
+				if ((key == "startDate") && (value < FirstBlog)) {
+					value = FirstBlog;
 				} else if ((key == "endDate") && (value > (new Date()))) {
 					value = new Date();
 				}
@@ -89,7 +89,7 @@ function setSelectOptions() {
 	}
 }
 
-function showArticlesList(articlesList) {
+function showBlogsList(blogsList) {
 	// 挺复~杂~的一个函数, 下面会慢慢解释的
 	let count = 0, i = 0;
 	// 是否开始显示博客列表了呢?
@@ -97,20 +97,20 @@ function showArticlesList(articlesList) {
 	let canShow = (onlyPage && (option.get("page") == 1))? true: false;
 	// 有些人会自己输入URL, 极有可能"?"后面的东西是随便输入的, 比如"?page=<一个很大的数字>"
 	// 所以这里会修正错误的数据
-	if (option.get("page") > getMaxPage(articlesList)) {
-		option.set("page", getMaxPage(articlesList));
+	if (option.get("page") > getMaxPage(blogsList)) {
+		option.set("page", getMaxPage(blogsList));
 		if (onlyPage && (option.get("page") == 1)) {
 			canShow = true;
 		}
 	}
-	let date = articlesList[0].time.slice(0, 2);
+	let date = blogsList[0].time.slice(0, 2);
 	let html = "";
 	if (canShow) {
 		$("#list").append(`<h5>${date[0]}年${date[1]}月</h5>`);
 	}
 	// 这个for和上面的getMaxPage差不多
-	for (let article of articlesList) {
-		if (date.toString() != article.time.slice(0, 2)) {
+	for (let blog of blogsList) {
+		if (date.toString() != blog.time.slice(0, 2)) {
 			if (!canShow) {
 				i ++;
 				if (i >= 6) {
@@ -126,22 +126,22 @@ function showArticlesList(articlesList) {
 			if (count > 5) {
 				break;
 			}
-			date = article.time.slice(0, 2);
+			date = blog.time.slice(0, 2);
 			$("#list").append("<ul>" + html + "</ul>");
 			$("#list").append(`<div><h5>${date[0]}年${date[1]}月</h5>`);
 			html = "";
 		}
 		if (canShow) {
-			html += `<li>${getArticleFileName(...article.time, false)} &raquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`;
+			html += `<li>${getBlogFileName(...blog.time, false)} &raquo; <a href="blogs.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a></li>`;
 		}
 	}
 	if (html.length > 0) {
 		$("#list").append("<ul>" + html + "</ul>");
 	}
 	// 显示页码
-	if (getMaxPage(articlesList) > 1) {
-		let start = 0, end = 0, now = option.get("page"), pages = getMaxPage(articlesList);
-		if (articlesList.length > 5) {
+	if (getMaxPage(blogsList) > 1) {
+		let start = 0, end = 0, now = option.get("page"), pages = getMaxPage(blogsList);
+		if (blogsList.length > 5) {
 			if ((now - 2 >= 1) && (now + 2 <= pages)) {
 				start = now - 2; end = now + 2;
 			} else if (now - 2 < 1) {
@@ -152,23 +152,23 @@ function showArticlesList(articlesList) {
 		} else {
 			start = 1; end = pages;
 		}
-		$("#pagination").append(`<li class="page-item ${(now == 1)? "disabled": ""}"><a class="page-link" href="${(now == 1)? "javascript:void(0)": "article.html?page=" + (now - 1)}">&laquo;</a></li>`);
+		$("#pagination").append(`<li class="page-item ${(now == 1)? "disabled": ""}"><a class="page-link" href="${(now == 1)? "javascript:void(0)": "blog.html?page=" + (now - 1)}">&laquo;</a></li>`);
 		for (let page = start; page <= end; page ++) {
-			$("#pagination").append(`<li class="page-item ${(now == page)? "active": ""}"><a class="page-link" href="${(now == page)? "javascript:void(0)": "article.html?page=" + page}">${page}</li>`);
+			$("#pagination").append(`<li class="page-item ${(now == page)? "active": ""}"><a class="page-link" href="${(now == page)? "javascript:void(0)": "blog.html?page=" + page}">${page}</li>`);
 		}
-		$("#pagination").append(`<li class="page-item ${(now == pages)? "disabled": ""}"><a class="page-link" href="${(now == pages)? "javascript:void(0)": "article.html?page=" + (now + 1)}">&raquo;</a></li>`);
+		$("#pagination").append(`<li class="page-item ${(now == pages)? "disabled": ""}"><a class="page-link" href="${(now == pages)? "javascript:void(0)": "blog.html?page=" + (now + 1)}">&raquo;</a></li>`);
 		$("#pagination-container").removeClass("d-none");
 	}
 }
 
-function searchArticles(articlesList) {
+function searchBlogs(blogsList) {
 	let canAdd = false;
 	let html = "";
-	for (let article of articlesList) {
+	for (let blog of blogsList) {
 		canAdd = true;
 		// 匹配startDate与endDate
-		if (option.get("startDate") <= (new Date(article.time))) {
-			if (option.get("endDate") >= (new Date(article.time))) {
+		if (option.get("startDate") <= (new Date(blog.time))) {
+			if (option.get("endDate") >= (new Date(blog.time))) {
 				canAdd = true;
 			} else {
 				canAdd = false;
@@ -178,19 +178,19 @@ function searchArticles(articlesList) {
 		}
 		// 匹配tag
 		for (let tag of option.get("tag")) {
-			if (article.tags.indexOf(tag) == -1) {
+			if (blog.tags.indexOf(tag) == -1) {
 				canAdd = false;
 				break;
 			}
 		}
 		// 匹配text
-		if (article.title.indexOf(option.get("text")) == -1) {
+		if (blog.title.indexOf(option.get("text")) == -1) {
 			canAdd = false;
 		}
 		if (option.get("text").length > 0) {
 			$.ajax({
 				"async": false,
-				"url": getArticleFileName(...article.time),
+				"url": getBlogFileName(...blog.time),
 				"success": (text) => {
 					// 清除各种Markdown标记
 					text = text.replace(/^#{1,6}\s*/gm, "")
@@ -207,7 +207,7 @@ function searchArticles(articlesList) {
 			});
 		}
 		if (canAdd){
-			html += `<li>${getArticleFileName(...article.time, false)} &raquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`
+			html += `<li>${getBlogFileName(...blog.time, false)} &raquo; <a href="blogs.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a></li>`
 		}
 	}
 	if (html.length > 0) {
@@ -235,5 +235,5 @@ function submitSearchForm() {
 	if (endDate.length > 0) {
 		options.push(`endDate=${endDate}`);
 	}
-	location.href=`article.html?${options.join("&")}`;
+	location.href=`blog.html?${options.join("&")}`;
 }

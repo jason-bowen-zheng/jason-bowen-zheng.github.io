@@ -42,19 +42,19 @@ const quotes = [
 	["安得广厦千万间，大庇天下寒士俱欢颜，风雨不动安如山。", "唐&middot;杜甫"]
 ];
 
-function getArticleFileName(year, month, day, fullPath=true) {
+function getBlogFileName(year, month, day, fullPath=true) {
 	month = (month.toString().length == 1)? `0${month}`: month.toString();
 	day = (day.toString().length == 1)? `0${day}`: day.toString();
 	if (!fullPath) {
 		return `${year}-${month}-${day}`;
 	} else {
-		return `articles/${year}-${month}-${day}.md`;
+		return `blogs/${year}-${month}-${day}.md`;
 	}
 }
 
-function loadArticle(articlesList, which) {
-	// 用于在articles.html显示文章的函数, 应该是onArticlesList的回调函数
-	// 对which(哪篇文章)的检查比较松: 2022-01-08和2022-1-8(以及任何能被Date构造函数识别的字符串)都能定位到同一篇文章(在网页中为了统一都会补零)
+function loadBlog(blogsList, which) {
+	// 用于在blogs.html显示博客的函数, 应该是onBlogsList的回调函数
+	// 对which(哪篇博客)的检查比较松: 2022-01-08和2022-1-8(以及任何能被Date构造函数识别的字符串)都能定位到同一篇(在网页中为了统一都会补零)
 	// 年月日之间必须是用短横线("-")分割的
 	which = which.split("-");
 	let now = [parseInt(which[0]), parseInt(which[1]), parseInt(which[2])];
@@ -72,31 +72,31 @@ function loadArticle(articlesList, which) {
 		},
 		renderer: renderer
 	});
-	for (let article of articlesList) {
+	for (let blog of blogsList) {
 		// 使用 Array.toString() == Array 可能比较简单
-		if (article.time.toString() == now) {
-			$("#article-title").text(article.title);
-			document.title = `个人小站 - ${article.title}`;
+		if (blog.time.toString() == now) {
+			$("#blog-title").text(blog.title);
+			document.title = `个人小站 - ${blog.title}`;
 			loaded = true;
-			for (tag of article.tags) {
-				$("#article-tags").append(`<a href="article.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`);
+			for (tag of blog.tags) {
+				$("#blog-tags").append(`<a href="blog.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`);
 			}
 			$.ajax({
 				"async": false,
-				"url": getArticleFileName(...now),
+				"url": getBlogFileName(...now),
 				"error": (xhr) => {
-					$("#article-content").html(`<span class="text-muted">文件未成功读取，错误代码：${xhr.status}。</span>`);
+					$("#blog-content").html(`<span class="text-muted">文件未成功读取，错误代码：${xhr.status}。</span>`);
 				},
 				"success": (text) => {
-					$("#article-container").html(marked.parse(text));
-					if (article.showGitalk) {
+					$("#blog-container").html(marked.parse(text));
+					if (blog.showGitalk) {
 						let gitalk = new Gitalk({
 							clientID: "e2d5986e5e12e075dfc0",
 							clientSecret: "d69a3f824c4f51e89f2562727c1fa6e7da467a45",
 							repo: "jason-bowen-zheng.github.io",
 							owner: "jason-bowen-zheng",
 							admin: ["jason-bowen-zheng"],
-							id: getArticleFileName(...now, false),
+							id: getBlogFileName(...now, false),
 							createIssueManually: true
 						});
 						if (location.href.indexOf(".github.io") != -1) {
@@ -108,16 +108,16 @@ function loadArticle(articlesList, which) {
 		}
 	}
 	if (!loaded) {
-		$("#article-content").html(`<p><code>${getArticleFileName(...now)}</code>不存在。</p>`);
+		$("#blog-content").html(`<p><code>${getBlogFileName(...now)}</code>不存在。</p>`);
 	}
 }
 
-function onArticlesList(callback, ...args) {
+function onBlogsList(callback, ...args) {
 	// 获取文章列表内容并调用回调函数
 	// 我知道这样子比较麻烦但是缩进少了呀!
 	$.ajax({
 		"async": false,
-		"url": "articles/lists.json",
+		"url": "blogs/lists.json",
 		"success": (list) => {
 			callback(list, ...args);
 		}
@@ -148,18 +148,21 @@ function showDailyImage() {
 	});
 }
 
-function showLatestArticle(articlesList) {
-	$("#article-title").text(articlesList[0].title);
+function showLatestBlog(blogsList) {
+	$("#blog-title").text(blogsList[0].title);
 	$.ajax({
-		"url": getArticleFileName(...articlesList[0].time),
+		"url": getBlogFileName(...blogsList[0].time),
 		"error": (xhr) => {
-			$("#article-content").html(`<span class="text-muted">文件未成功读取，错误代码：${xhr.status}。</span>`);
+			$("#blog-content").html(`<span class="text-muted">内容未成功读取，错误代码：${xhr.status}。</span>`);
 		},
 		"success": (text) => {
 			let result = marked.parse(text);
-			$("#article-content").html(result.slice(result.indexOf("<p>"), result.indexOf("</p>") + 4));
-			$("#time").text(getArticleFileName(...articlesList[0].time, false));
-			$("#article-link").attr("href", `articles.html?${getArticleFileName(...articlesList[0].time, false)}`);	
+			for (tag of blogsList[0].tags) {
+				$("#blog-tags").append(`<a href="blog.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`);
+			}
+			$("#blog-content").html(result.slice(result.indexOf("<p>"), result.indexOf("</p>") + 4));
+			$("#blog-time").text(getBlogFileName(...blogsList[0].time, false));
+			$("#blog-link").attr("href", `blogs.html?${getBlogFileName(...blogsList[0].time, false)}`);	
 		}
 	});
 }
@@ -180,14 +183,14 @@ function showQuote() {
 	}
 }
 
-function showRecentArticle(articlesList) {
+function showRecentBlog(blogsList) {
 	let count = 0;
 	let now = new Date();
-	for (let article of articlesList) {
-		let date = new Date(article.time[0], article.time[1] - 1, article.time[2]);
+	for (let blog of blogsList) {
+		let date = new Date(blog.time[0], blog.time[1] - 1, blog.time[2]);
 		// 2592000000s 是30天
 		if ((0 < now - date) && (now - date < 2592000000)) {
-			$("#recent-articles").append(`<li>${getArticleFileName(...article.time, false)} &raquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`);
+			$("#recent-blogs").append(`<li>${getBlogFileName(...blog.time, false)} &raquo; <a href="blogs.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a></li>`);
 			count ++;
 			if (count >= 5) {
 				return;
@@ -195,7 +198,7 @@ function showRecentArticle(articlesList) {
 		}
 	}
 	if (count == 0) {
-		$("#recent-articles").append(`<li>${getArticleFileName(...article.time, false)} &raquo; <a href="articles.html?${getArticleFileName(...article.time, false)}">${article.title}</a></li>`);
+		$("#recent-blogs").append(`<li>${getBlogFileName(...blog.time, false)} &raquo; <a href="blogs.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a></li>`);
 	}
 }
 
