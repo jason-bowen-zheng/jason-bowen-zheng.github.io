@@ -85,7 +85,7 @@ function loadBlog(blogsList, which) {
 				"async": false,
 				"url": getBlogFileName(...now),
 				"error": (xhr) => {
-					$("#blog-content").html(`<span class="text-muted">文件未成功读取，错误代码：${xhr.status}。</span>`);
+					$("#blog-container").html(`<span class="text-muted">文件未成功读取，错误代码：${xhr.status}。</span>`);
 				},
 				"success": (text) => {
 					$("#blog-container").html(marked.parse(text));
@@ -108,7 +108,7 @@ function loadBlog(blogsList, which) {
 		}
 	}
 	if (!loaded) {
-		$("#blog-content").html(`<p><code>${getBlogFileName(...now)}</code>不存在。</p>`);
+		$("#blog-container").html(`<p align="center"><code>${getBlogFileName(...now)}</code>不存在。</p>`);
 	}
 }
 
@@ -221,7 +221,6 @@ function showToday() {
 	} else {
 		$("#today").html($("#today").html() + `，距明年还有${parseInt((nextYear - now) / 86400000 + 1)}天。`);
 	}
-	$("#today").html($("#today").html() + `<br>UTC时间：${now}。`);
 	$("#today-lists").html(`<li><a href="https://zh.wikipedia.org/wiki/${now.getMonth() + 1}月${now.getDate()}日">维基百科：${now.getMonth() + 1}月${now.getDate()}日</a></li>`);
 	if (lunar.lunarFestival || lunar.Term) {
 		$("#today-lists").html($("#today-lists").html() + `<li><a href="https://zh.wikipedia.org/wiki/${lunar.lunarFestival || lunar.Term}">维基百科：${lunar.lunarFestival || lunar.Term}</li>`);

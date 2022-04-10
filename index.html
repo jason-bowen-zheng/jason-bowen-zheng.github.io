@@ -20,7 +20,9 @@
 				setSelectOptions();
 				setInterval(showToday, 1000);
 				$("#btn-search").on("click", () => {
-					location.href = `blog.html?text=${encodeURIComponent($("#search-text").val())}`;
+					if ($("#search-text").val().length > 0) {
+						location.href = `blog.html?text=${encodeURIComponent($("#search-text").val())}`;
+					}
 				});
 				$("#btn-search2").on("click", () => {
 					submitSearchForm();
@@ -97,7 +99,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="mt-3 mb-3 split" style="width: 75%;"></div>
+							<div class="split mt-3 mb-3" style="width: 75%;"></div>
 							<div id="quote-section">
 								<div class="d-flex align-items-center">
 									<div class="flex-shrink-0">
@@ -121,7 +123,7 @@
 									<span class="float-start text-muted card-text" id="blog-time"></span>
 									<div class="float-end card-text">
 										<a href="blog.html">全部博客</a>
-										<b>&middot;</b>
+										<span>&bullet;</span>
 										<a id="blog-link">阅读全文</a>
 									</div>
 								</div>
@@ -144,17 +146,17 @@
 							<div id="search-blog-section">
 								<h2 class="card-title">搜索博客</h2>
 								<input class="form-control" id="search-text" placeholder="搜索博客..." type="text">
-								<div class="mt-2 d-grid gap-2 d-flex justify-content-end">
+								<div class="d-grid gap-2 d-flex justify-content-end mt-2">
 									<button class="btn btn-outline-primary" id="btn-search">搜索博客</button>
 									<div class="m-1"></div>
 									<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#search-modal">更多...</button>
 								</div>
 							</div>
-							<div class="mt-3 mb-3 split" style="width: 75%;"></div>
+							<div class="split mt-3 mb-3" style="width: 75%;"></div>
 							<div id="today-section">
 								<h2 class="card-title">今天...</h2>
 								<p class="card-text" id="today"></p>
-								<ul id="today-lists"></ul>
+								<ul class="mb-0" id="today-lists"></ul>
 							</div>
 						</div>
 					</div>

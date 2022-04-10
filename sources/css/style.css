@@ -23,11 +23,6 @@
 	background-color: #dee2e6;
 }
 
-/*.right-column-top {
-	border: 1px solid rgba(0, 0, 0, 0.125);
-	border-radius: 0.25rem;
-}*/
-
 .svg-icon {
 	font-size: 150%;
 }
@@ -44,16 +39,16 @@ blockquote {
 	border-left: .25em solid #dee2e6;
 }
 
-div#article-container > h2 {
+div#blog-container > h2 {
 	text-align: center;
 }
 
-div#article-container > h3 {
+div#blog-container > h3 {
 	border-bottom: 1px solid #cbcdce;
 	width: 100%;
 }
 
-div#article-container > h5 {
+div#blog-container > h5 {
 	padding-left: 16px;
 }
 
