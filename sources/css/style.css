@@ -14,6 +14,10 @@
 	margin-right: 3%;
 }
 
+.other-project {
+	padding: 5px;
+}
+
 .split {
 	width: 95%;
 	height: 1px;
@@ -23,7 +27,21 @@
 	background-color: #dee2e6;
 }
 
+.double-split {
+	width: 95%;
+	height: 4px;
+	margin: 0 auto;
+	margin-top: 4px;
+	margin-bottom: 4px;
+	border: solid #dee2e6;
+	border-width: 1px 0px 1px 0px;
+}
+
 .svg-icon {
+	font-size: 200%;
+}
+
+.svg-icon-inline {
 	font-size: 150%;
 }
 
@@ -111,7 +129,7 @@ table > * > tr > td.none {
 	.right-column {
 		margin-top: 1rem;
 	}
-
+	
 	.pay-attention {
 		background-color: #f8f9fa;
 		border: 1px solid #fd7e14;
@@ -151,6 +169,11 @@ table > * > tr > td.none {
 		margin: 5px;
 		padding: 5px;
 		width: 37%;
+	}
+
+	.other-projects-list {
+		display: flex;
+		justify-content: space-around;
 	}
 
 	.pay-attention {
