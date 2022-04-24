@@ -223,9 +223,14 @@ function submitSearchForm() {
 	if (text.length > 0) {
 		options.push(`text=${text}`);
 	}
-	let tag = $("#searchModal-tags").val();
-	if (tag.length > 0) {
-		options.push(`tag=${tag}`);
+	let tags = [];
+	for (let element of $("#searchModal-tags").children()) {
+		if (element.selected) {
+			tags.push(element.text);
+		}
+	}
+	if (tags.join(",").length > 0) {
+		options.push(`tag=${tags.join(",")}`);
 	}
 	let startDate = $("#searchModal-start-date").val();
 	if (startDate.length > 0) {
