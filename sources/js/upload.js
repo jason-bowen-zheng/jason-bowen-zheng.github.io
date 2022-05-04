@@ -16,7 +16,7 @@ function uploadFile(imagesList) {
 	let baseURL = "https://api.github.com/repos/jason-bowen-zheng/jason-bowen-zheng.github.io";
 	let failed = false;
 	let date = new Date();
-	let now = getArticleFileName(date.getFullYear(), date.getMonth() + 1, date.getDate(), false);
+	let now = getBlogFileName(date.getFullYear(), date.getMonth() + 1, date.getDate(), false);
 	let sha;
 	$.ajax({
 		"async": false,
@@ -80,7 +80,7 @@ function uploadImage(imagesList) {
 	let baseURL = "https://api.github.com/repos/jason-bowen-zheng/jason-bowen-zheng.github.io";
 	let failed = false;
 	let date = new Date();
-	let now = getArticleFileName(date.getFullYear(), date.getMonth() + 1, date.getDate(), false);
+	let now = getBlogFileName(date.getFullYear(), date.getMonth() + 1, date.getDate(), false);
 	// 空字符串的sha256值
 	let sha = "e3b0c44298fc1c14";
 	for (item of imagesList) {

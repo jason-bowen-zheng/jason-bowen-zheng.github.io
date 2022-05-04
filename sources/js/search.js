@@ -1,4 +1,4 @@
-let FirstBlog = new Date();
+let firstBlog = new Date();
 let tags = [];
 let onlyPage = true;
 let option = new Map(Object.entries({
@@ -37,15 +37,14 @@ function getMaxPage(list) {
 function setFirstBlogTime(blogsList) {
 	let i = blogsList.length - 1;
 	let time = blogsList[i].time;
-	let FirstBlog = new Date(time);
-	option.set("startDate", FirstBlog);
+	let firstBlog = new Date(time);
+	option.set("startDate", firstBlog);
 }
 
 function setOption() {
 	for (let item of location.search.slice(1).split("&")) {
 		let key = decodeURIComponent(item.split("=", 1)[0]);
 		let value = decodeURIComponent(item.slice(key.length + 1));
-		console.log(`${key}=${value}`);
 		if (option.get(key) == undefined) {
 			continue;
 		}
@@ -57,16 +56,15 @@ function setOption() {
 		} else if ((key == "startDate") || (key == "endDate")) {
 			let date = value.split("-");
 			value = new Date(date);
-			console.log(value);
 			if (value.toString() == "Invalid Date") {
 				if (key == "startDate") {
-					value = FirstBlog;
+					value = firstBlog;
 				} else {
 					value = new Date();
 				}
 			} else {
-				if ((key == "startDate") && (value < FirstBlog)) {
-					value = FirstBlog;
+				if ((key == "startDate") && (value < firstBlog)) {
+					value = firstBlog;
 				} else if ((key == "endDate") && (value > (new Date()))) {
 					value = new Date();
 				}
