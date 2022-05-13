@@ -28,7 +28,7 @@ const quotes = [
 	["无边落木萧萧下，不尽长江滚滚来。", "唐&middot;杜甫"],
 	["不识庐山真面目，只缘身在此山中。", "宋&middot;苏轼"],
 	["长风破浪会有时，直挂云帆济沧海。", "唐&middot;李白"],
-	// 我认为的"人生如梦，一樽还酹江月"英语翻译, 还很押韵呢!
+	// 我认为的"人生如梦，一樽还酹江月"英语翻译，还很押韵呢！
 	["Life likes a dream and I should carpe diem!", "作者"],
 	["先天下之忧而忧，后天下之乐而乐。", "宋&middot;范仲淹"],
 	["人生自古谁无死，留取丹心照汗青。", "宋&middot;文天祥"],
@@ -52,14 +52,60 @@ function getBlogFileName(year, month, day, fullPath=true) {
 	}
 }
 
-function loadBlog(blogsList, which) {
-	// 用于在blogs.html显示博客的函数, 应该是onBlogsList的回调函数
-	// 对which(哪篇博客)的检查比较松: 2022-01-08和2022-1-8(以及任何能被Date构造函数识别的字符串)都能定位到同一篇(在网页中为了统一都会补零)
-	// 年月日之间必须是用短横线("-")分割的
-	which = which.split("-");
-	let now = [parseInt(which[0]), parseInt(which[1]), parseInt(which[2])];
-	let loaded = false;
+function renderMarkdown(text) {
+	// 渲染Markdown
 	let renderer = new marked.Renderer();
+
+	const blockMath = {
+		// 行间公式
+		name: "blockMath",
+		level: "block",
+		start(src) {
+			let match =  src.match(/\$\$/);
+			return match? match.index: undefined;
+		},
+		tokenizer(src, tokens) {
+			const rule = /^\$\$([^\$\$]+?)\$\$/;
+			const match = rule.exec(src);
+			if (match) {
+				return {
+					type: "blockMath",
+					raw: match[0],
+					text: match[0],
+					tokens: []
+				};
+			}
+		},
+		renderer(token) {
+			return `${token.raw.replace(/</g, "&lt;").replace(/>/g, "&gt;")}`;
+		}
+	};
+
+	const inlineMath = {
+		// 行内公式
+		name: "inlineMath",
+		level: "inline",
+		start(src) {
+			let match =  src.match(/\$/);
+			return match? match.index: undefined;
+		},
+		tokenizer(src, tokens) {
+			const rule = /^\$([^\$]+?)\$/;
+			const match = rule.exec(src);
+			if (match) {
+				return {
+					type: "inlineMath",
+					raw: match[0],
+					text: match[0],
+					tokens: []
+				};
+			}
+		},
+		renderer(token) {
+			return `${token.raw.replace(/</g, "&lt;").replace(/>/g, "&gt;")}`;
+		}
+	};
+
 	renderer.image = function (href, title, text) {
 		return `<img alt="${text}" class="in-art" src="${(href.indexOf("//") != -1)? href: "sources/images/" + href}">`;
 	};
@@ -72,6 +118,19 @@ function loadBlog(blogsList, which) {
 		},
 		renderer: renderer
 	});
+	marked.use({
+		extensions: [blockMath, inlineMath]
+	});
+	return marked.parse(text);
+}
+
+function loadBlog(blogsList, which) {
+	// 用于在blogs.html显示博客的函数, 应该是onBlogsList的回调函数（当然也可以在函数内调用onBlogsList，但缩进太多了）
+	// 对which（哪篇博客）的检查比较松: 2022-01-08和2022-1-8（以及任何能被Date构造函数识别的字符串）都能定位到同一篇（在网页中为了统一都会补零）
+	// 年月日之间必须是用短横线（"-"）分割的
+	which = which.split("-");
+	let now = [parseInt(which[0]), parseInt(which[1]), parseInt(which[2])];
+	let loaded = false;
 	for (let blog of blogsList) {
 		// 使用 Array.toString() == Array 可能比较简单
 		if (blog.time.toString() == now) {
@@ -88,7 +147,11 @@ function loadBlog(blogsList, which) {
 					$("#blog-container").html(`<span class="text-muted">文件未成功读取，错误代码：${xhr.status}。</span>`);
 				},
 				"success": (text) => {
-					$("#blog-container").html(marked.parse(text));
+					$("#blog-container").html(renderMarkdown(text));
+					if ($("#blog-container").children()[0].nodeName == "H1") {
+						$("#blog-title").text($("#blog-container").children()[0].innerText);
+						$("#blog-container").children()[0].remove();
+					}
 					if (blog.showGitalk) {
 						let gitalk = new Gitalk({
 							clientID: "e2d5986e5e12e075dfc0",
@@ -114,7 +177,7 @@ function loadBlog(blogsList, which) {
 
 function onBlogsList(callback, ...args) {
 	// 获取文章列表内容并调用回调函数
-	// 我知道这样子比较麻烦但是缩进少了呀!
+	// 我知道这样子比较麻烦但是缩进少了呀！
 	$.ajax({
 		"async": false,
 		"url": "blogs/lists.json",
@@ -156,7 +219,7 @@ function showLatestBlog(blogsList) {
 			$("#blog-content").html(`<span class="text-muted">内容未成功读取，错误代码：${xhr.status}。</span>`);
 		},
 		"success": (text) => {
-			let result = marked.parse(text);
+			let result = renderMarkdown(text);
 			for (tag of blogsList[0].tags) {
 				$("#blog-tags").append(`<a href="blog.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`);
 			}

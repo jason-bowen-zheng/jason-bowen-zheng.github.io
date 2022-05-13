@@ -191,12 +191,19 @@ function searchBlogs(blogsList) {
 				"url": getBlogFileName(...blog.time),
 				"success": (text) => {
 					// 清除各种Markdown标记
+					// 1~6号标题
 					text = text.replace(/^#{1,6}\s*/gm, "")
-						.replace(/\$\$.+?\$\$/g, "").replace(/::.+?::/g, "")
+						// 数学标记（行间，行内）
+						.replace(/\$\$.+?\$\$/g, "").replace(/\$.+?\$/g, "")
+						// 无序/有序列表
 						.replace(/^\s*-\s*/gm, "").replace(/^\d+\.\s*/gm, "")
+						// 引用，粗体，粗斜体
 						.replace(/^\s*>*\s*/gm, "").replace(/\*\*\*?/g, "")
+						// 超链接
 						.replace(/\[(.+?)\]\(.+?\)/g, "$1")
+						// <div>标签
 						.replace(/<div.+?>/g, "").replace(/<\/div>/g, "")
+						// HTML实体引用，空白
 						.replace(/&.+?;/g, "").replace(/\s/g, "");
 					if (text.indexOf(option.get("text")) != -1) {
 						canAdd = true;
