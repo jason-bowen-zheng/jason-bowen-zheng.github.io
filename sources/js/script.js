@@ -138,7 +138,7 @@ function loadBlog(blogsList, which) {
 			document.title = `个人小站 - ${blog.title}`;
 			loaded = true;
 			for (tag of blog.tags) {
-				$("#blog-tags").append(`<a href="blog.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`);
+				$("#blog-tags").append(`<a href="blogs.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`);
 			}
 			$.ajax({
 				"async": false,
@@ -221,11 +221,11 @@ function showLatestBlog(blogsList) {
 		"success": (text) => {
 			let result = renderMarkdown(text);
 			for (tag of blogsList[0].tags) {
-				$("#blog-tags").append(`<a href="blog.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`);
+				$("#blog-tags").append(`<a href="blogs.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`);
 			}
 			$("#blog-content").html(result.slice(result.indexOf("<p>"), result.indexOf("</p>") + 4));
 			$("#blog-time").text(getBlogFileName(...blogsList[0].time, false));
-			$("#blog-link").attr("href", `blogs.html?${getBlogFileName(...blogsList[0].time, false)}`);	
+			$("#blog-link").attr("href", `blog.html?${getBlogFileName(...blogsList[0].time, false)}`);	
 		}
 	});
 }
@@ -253,7 +253,7 @@ function showRecentBlog(blogsList) {
 		let date = new Date(blog.time[0], blog.time[1] - 1, blog.time[2]);
 		// 2592000000s 是30天
 		if ((0 < now - date) && (now - date < 2592000000)) {
-			$("#recent-blogs").append(`<li>${getBlogFileName(...blog.time, false)} &raquo; <a href="blogs.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a></li>`);
+			$("#recent-blogs").append(`<li>${getBlogFileName(...blog.time, false)} &raquo; <a href="blog.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a></li>`);
 			count ++;
 			if (count >= 5) {
 				return;
@@ -261,7 +261,7 @@ function showRecentBlog(blogsList) {
 		}
 	}
 	if (count == 0) {
-		$("#recent-blogs").append(`<li>${getBlogFileName(...blog.time, false)} &raquo; <a href="blogs.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a></li>`);
+		$("#recent-blogs").append(`<li>${getBlogFileName(...blog.time, false)} &raquo; <a href="blog.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a></li>`);
 	}
 }
 

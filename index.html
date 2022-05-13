@@ -20,7 +20,7 @@
 				setSelectOptions();
 				$("#btn-search").on("click", () => {
 					if ($("#search-text").val().length > 0) {
-						location.href = `blog.html?text=${encodeURIComponent($("#search-text").val())}`;
+						location.href = `blogs.html?text=${encodeURIComponent($("#search-text").val())}`;
 					}
 				});
 				$("#btn-search2").on("click", () => {
@@ -121,7 +121,7 @@
 								<div class="clearfix w-100" style="font-size: 80%;">
 									<span class="float-start text-muted card-text" id="blog-time"></span>
 									<div class="float-end card-text">
-										<a href="blog.html">全部博客</a>
+										<a href="blogs.html">全部博客</a>
 										<span>&bullet;</span>
 										<a id="blog-link">阅读全文</a>
 									</div>

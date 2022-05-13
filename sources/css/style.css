@@ -152,6 +152,10 @@ table > * > tr > td.none {
 		padding: 4px;
 	}
 
+	.blog-tags {
+		display: none;
+	}
+
 }
 
 @media (min-width: 720px) {
@@ -195,14 +199,6 @@ table > * > tr > td.none {
 		margin: 0 auto;
 		max-width: 450px;
 		width: 75%;
-	}
-
-	div#list {
-		column-count: 2;
-		-moz-column-count: 2;
-		-webkit-column-count: 2;
-		width: 75%;
-		margin: 0 auto;
 	}
 
 	form.upload {
