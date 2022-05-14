@@ -108,7 +108,7 @@ function showBlogsList(blogsList) {
 			html = "<li class='list-group-item d-flex justify-content-between align-items-start'>";
 			html+= "<div class='ms-2 me-auto'>";
 			html+= `${getBlogFileName(...blog.time, false)} &raquo; <a href="blog.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a>`;
-			html+=`</div><div class="blog-tags">${tagsHtml}</div></li>`;
+			html+=`</div><div class="blog-tags-list">${tagsHtml}</div></li>`;
 			$("#blog-list").append(html);
 			count ++;
 			if (count > perPage) {
@@ -199,7 +199,7 @@ function searchBlogs(blogsList) {
 			html += "<li class='list-group-item d-flex justify-content-between align-items-start'>";
 			html += "<div class='ms-2 me-auto'>";
 			html += `${getBlogFileName(...blog.time, false)} &raquo; <a href="blog.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a>`;
-			html +=`</div><div class="blog-tags">${tagsHtml}</div></li>`;
+			html +=`</div><div class="blog-tags-list">${tagsHtml}</div></li>`;
 		}
 	}
 	if (html.length > 0) {

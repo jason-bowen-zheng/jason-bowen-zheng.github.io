@@ -159,8 +159,7 @@ function loadBlog(blogsList, which) {
 							repo: "jason-bowen-zheng.github.io",
 							owner: "jason-bowen-zheng",
 							admin: ["jason-bowen-zheng"],
-							id: getBlogFileName(...now, false),
-							createIssueManually: true
+							id: getBlogFileName(...now, false)
 						});
 						if (location.href.indexOf(".github.io") != -1) {
 							gitalk.render("gitalk-container");
@@ -171,7 +170,7 @@ function loadBlog(blogsList, which) {
 		}
 	}
 	if (!loaded) {
-		$("#blog-container").html(`<p align="center"><code>${getBlogFileName(...now)}</code>不存在。</p>`);
+		$("#blog-container").html(`<p align="center"><code>${getBlogFileName(...now, fullPath=false)}</code>不存在。</p>`);
 	}
 }
 
