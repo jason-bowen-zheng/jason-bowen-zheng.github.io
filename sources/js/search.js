@@ -105,7 +105,7 @@ function showBlogsList(blogsList) {
 				tagsHtml += `<a href="blogs.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`;
 			}
 			let html = "";
-			html = "<li class='list-group-item d-flex justify-content-between align-items-start'>";
+			html = "<li class='list-group-item list-group-item-action d-flex justify-content-between align-items-start'>";
 			html+= "<div class='ms-2 me-auto'>";
 			html+= `${getBlogFileName(...blog.time, false)} &raquo; <a href="blog.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a>`;
 			html+=`</div><div class="blog-tags-list">${tagsHtml}</div></li>`;
@@ -196,7 +196,7 @@ function searchBlogs(blogsList) {
 			for (let tag of blog.tags) {
 				tagsHtml += `<a href="blogs.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`;
 			}
-			html += "<li class='list-group-item d-flex justify-content-between align-items-start'>";
+			html += "<li class='list-group-item list-group-item-action d-flex justify-content-between align-items-start'>";
 			html += "<div class='ms-2 me-auto'>";
 			html += `${getBlogFileName(...blog.time, false)} &raquo; <a href="blog.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a>`;
 			html +=`</div><div class="blog-tags-list">${tagsHtml}</div></li>`;
