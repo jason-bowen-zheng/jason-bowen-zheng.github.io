@@ -13,13 +13,13 @@
 		<script src="sources/js/search.js"></script>
 		<script>
 			$(document).ready(() => {
-				onBlogsList(setFirstBlogTime);
+				setFirstBlogTime()
 				setSelectOptions();
 				$("#btn-search").on("click", () => {
 					submitSearchForm();
 				});
 				if (location.search.length == 0) {
-					onBlogsList(showBlogsList);
+					showBlogsList(getBlogsList());
 				} else if (location.search == "?help") {
 					document.title = "个人小站 - 搜索选项帮助";
 					$("#help").removeClass("d-none");
@@ -31,9 +31,9 @@
 				} else {
 					setOption();
 					if (onlyPage) {
-						onBlogsList(showBlogsList);
+						showBlogsList(getBlogsList());
 					} else {
-						onBlogsList(searchBlogs);
+						searchBlogs();
 					}
 				}
 			});

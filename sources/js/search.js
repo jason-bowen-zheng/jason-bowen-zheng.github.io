@@ -11,15 +11,13 @@ let option = new Map(Object.entries({
 }));
 
 // 将所有的文章标签存放至tags
-onBlogsList((l) => {
-	for (let item of l) {
-		for (tag of item.tags) {
-			if (tags.indexOf(tag) == -1) {
-				tags.push(tag);
-			}
+for (let blog of getBlogsList()) {
+	for (let tag of blog.tags) {
+		if (tags.indexOf(tag) == -1) {
+			tags.push(tag);
 		}
 	}
-});
+}
 
 function buildQuery(page=1) {
 	let query = [];
@@ -49,9 +47,9 @@ function getMaxPage(list) {
 	}
 }
 
-function setFirstBlogTime(blogsList) {
-	let i = blogsList.length - 1;
-	let time = blogsList[i].time;
+function setFirstBlogTime() {
+	let i = getBlogsList().length - 1;
+	let time = getBlogsList()[i].time;
 	firstBlog = new Date(time);
 	option.set("startDate", firstBlog);
 }
@@ -162,9 +160,9 @@ function showBlogsList(blogsList) {
 	}
 }
 
-function searchBlogs(blogsList) {
+function searchBlogs() {
 	let matchedBlogs = [];
-	for (let blog of blogsList) {
+	for (let blog of getBlogsList()) {
 		let canAdd = true;
 		// 匹配startDate与endDate
 		let blogDate = new Date(blog.time);
@@ -188,20 +186,14 @@ function searchBlogs(blogsList) {
 				"url": getBlogFileName(...blog.time),
 				"success": (text) => {
 					// 清除各种Markdown标记
-					// 1~6号标题
 					text = text.replace(/^#{1,6}\s*/gm, "")
-						// 数学标记（行间，行内）
-						.replace(/\$\$.+?\$\$/g, "").replace(/\$.+?\$/g, "")
-						// 无序/有序列表
-						.replace(/^\s*-\s*/gm, "").replace(/^\d+\.\s*/gm, "")
-						// 引用，粗体，粗斜体
-						.replace(/^\s*>*\s*/gm, "").replace(/\*\*\*?/g, "")
-						// 超链接
-						.replace(/\[(.+?)\]\(.+?\)/g, "$1")
-						// <div>标签
+						.replace(/\$\$([^\$\$]+?)\$\$/g, "").replace(/\$([^\$]+?)\$/g, "")
+						.replace(/\s*-\s*/gm, "").replace(/\s*\d+\.\s*/gm, "")
+						.replace(/\s*>*\s*/gm, "").replace(/\*\*\*?/g, "").replace(/__/g, "")
+						.replace(/\[(.+?)\]\(.+?\)/g, "$1").replace(/[|:-]/g, "")
 						.replace(/<div.+?>/g, "").replace(/<\/div>/g, "")
-						// HTML实体引用，空白
-						.replace(/&.+?;/g, "").replace(/\s/g, "");
+						.replace(/&.+?;/g, "").replace(/\s/g, "")
+						.replace(/<!\-\-.+?\-\->/gsm, "");
 					if (text.indexOf(option.get("text")) != -1) {
 						canAdd = true;
 					}

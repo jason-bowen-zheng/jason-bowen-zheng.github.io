@@ -42,6 +42,8 @@ const quotes = [
 	["安得广厦千万间，大庇天下寒士俱欢颜，风雨不动安如山。", "唐&middot;杜甫"]
 ];
 
+let blogsListCache = null;
+
 function getBlogFileName(year, month, day, fullPath=true) {
 	month = (month.toString().length == 1)? `0${month}`: month.toString();
 	day = (day.toString().length == 1)? `0${day}`: day.toString();
@@ -124,14 +126,13 @@ function renderMarkdown(text) {
 	return marked.parse(text);
 }
 
-function loadBlog(blogsList, which) {
-	// 用于在blogs.html显示博客的函数, 应该是onBlogsList的回调函数（当然也可以在函数内调用onBlogsList，但缩进太多了）
+function loadBlog(which) {
 	// 对which（哪篇博客）的检查比较松: 2022-01-08和2022-1-8（以及任何能被Date构造函数识别的字符串）都能定位到同一篇（在网页中为了统一都会补零）
 	// 年月日之间必须是用短横线（"-"）分割的
 	which = which.split("-");
 	let now = [parseInt(which[0]), parseInt(which[1]), parseInt(which[2])];
 	let loaded = false;
-	for (let blog of blogsList) {
+	for (let blog of getBlogsList()) {
 		// 使用 Array.toString() == Array 可能比较简单
 		if (blog.time.toString() == now) {
 			$("#blog-title").text(blog.title);
@@ -174,27 +175,19 @@ function loadBlog(blogsList, which) {
 	}
 }
 
-function onBlogsList(callback, ...args) {
-	// 获取文章列表内容并调用回调函数
-	// 我知道这样子比较麻烦但是缩进少了呀！
-	$.ajax({
-		"async": false,
-		"url": "blogs/lists.json",
-		"success": (list) => {
-			callback(list, ...args);
-		}
-	});
-}
-
-function onImagesList(callback, ...args) {
-	// 获取每日图片列表内容并调用回调函数
-	$.ajax({
-		"async": false,
-		"url": "sources/images/lists.json",
-		"success": (list) => {
-			callback(list, ...args);
-		}
-	});
+function getBlogsList() {
+	if (blogsListCache != null) {
+		return blogsListCache;
+	} else {
+		$.ajax({
+			"async": false,
+			"url": "blogs/index.json",
+			"success": (list) => {
+				blogsListCache = list;
+			}
+		});
+		return blogsListCache;
+	}
 }
 
 function showDailyImage() {
@@ -210,21 +203,22 @@ function showDailyImage() {
 	});
 }
 
-function showLatestBlog(blogsList) {
-	$("#blog-title").text(blogsList[0].title);
+function showLatestBlog() {
+	let blog = getBlogsList()[0];
+	$("#blog-title").text(blog.title);
 	$.ajax({
-		"url": getBlogFileName(...blogsList[0].time),
+		"url": getBlogFileName(...blog.time),
 		"error": (xhr) => {
 			$("#blog-content").html(`<span class="text-muted">内容未成功读取，错误代码：${xhr.status}。</span>`);
 		},
 		"success": (text) => {
 			let result = renderMarkdown(text);
-			for (tag of blogsList[0].tags) {
+			for (tag of blog.tags) {
 				$("#blog-tags").append(`<a href="blogs.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`);
 			}
 			$("#blog-content").html(result.slice(result.indexOf("<p>"), result.indexOf("</p>") + 4));
-			$("#blog-time").text(getBlogFileName(...blogsList[0].time, false));
-			$("#blog-link").attr("href", `blog.html?${getBlogFileName(...blogsList[0].time, false)}`);	
+			$("#blog-time").text(getBlogFileName(...blog.time, false));
+			$("#blog-link").attr("href", `blog.html?${getBlogFileName(...blog.time, false)}`);	
 		}
 	});
 }
@@ -238,18 +232,14 @@ function showMathsTips() {
 function showQuote() {
 	let now = new Date();
 	let index = (now.getDate() + now.getHours()) % quotes.length;
-	if (now.getMonth() == 0 && now.getDate() == 1) {
-		$("#quote").html(`<b>宋&middot;王安石</b>：爆竹声中一岁除，春风送暖入屠苏。`);
-	} else {
-		$("#quote").html(`<b>${quotes[index][1]}</b>：${quotes[index][0]}`);
-	}
+	$("#quote").html(`<b>${quotes[index][1]}</b>：${quotes[index][0]}`);
 }
 
-function showRecentBlog(blogsList) {
+function showRecentBlog() {
 	let count = 0;
 	let now = new Date();
-	for (let blog of blogsList) {
-		let date = new Date(blog.time[0], blog.time[1] - 1, blog.time[2]);
+	for (let blog of getBlogsList()) {
+		let date = new Date(blog.time);
 		// 2592000000s 是30天
 		if ((0 < now - date) && (now - date < 2592000000)) {
 			$("#recent-blogs").append(`<li>${getBlogFileName(...blog.time, false)} &raquo; <a href="blog.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a></li>`);
