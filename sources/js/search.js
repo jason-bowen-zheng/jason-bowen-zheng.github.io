@@ -21,6 +21,24 @@ onBlogsList((l) => {
 	}
 });
 
+function buildQuery(page=1) {
+	let query = [];
+	if (option.get("text").length > 0) {
+		query.push(`text=${option.get("text")}`);
+	}
+	if (option.get("tag").join(",").length > 0) {
+		query.push(`tag=${option.get("tag").join(",")}`);
+	}
+	if (option.get("startDate").length > 0) {
+		query.push(`startDate=${option.get("startDate")}`);
+	}
+	if (option.get("endDate").length > 0) {
+		query.push(`endDate=${option.get("endDate")}`);
+	}
+	query.push(`page=${page}`);
+	return query.join("&");
+}
+
 function getMaxPage(list) {
 	// 返回总页数
 	let page = list.length / perPage;
@@ -89,12 +107,12 @@ function showBlogsList(blogsList) {
 	let count = 1;
 	// 是否开始显示博客列表了呢?
 	// 在第一页的时候总是为true
-	let canShow = (onlyPage && (option.get("page") == 1))? true: false;
+	let canShow = (option.get("page") == 1)? true: false;
 	// 有些人会自己输入URL, 极有可能"?"后面的东西是随便输入的, 比如"?page=<一个很大的数字>"
 	// 所以这里会修正错误的数据
 	if (option.get("page") > getMaxPage(blogsList)) {
 		option.set("page", getMaxPage(blogsList));
-		if (onlyPage && (option.get("page") == 1)) {
+		if (option.get("page") == 1) {
 			canShow = true;
 		}
 	}
@@ -105,7 +123,7 @@ function showBlogsList(blogsList) {
 				tagsHtml += `<a href="blogs.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`;
 			}
 			let html = "";
-			html = "<li class='list-group-item list-group-item-action d-flex justify-content-between align-items-start'>";
+			html = "<li class='list-group-item d-flex justify-content-between align-items-start'>";
 			html+= "<div class='ms-2 me-auto'>";
 			html+= `${getBlogFileName(...blog.time, false)} &raquo; <a href="blog.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a>`;
 			html+=`</div><div class="blog-tags-list">${tagsHtml}</div></li>`;
@@ -135,20 +153,19 @@ function showBlogsList(blogsList) {
 		} else {
 			start = 1; end = pages;
 		}
-		$("#pagination").append(`<li class="page-item ${(now == 1)? "disabled": ""}"><a class="page-link" href="${(now == 1)? "javascript:void(0)": "blogs.html?page=" + (now - 1)}">&laquo;</a></li>`);
+		$("#pagination").append(`<li class="page-item ${(now == 1)? "disabled": ""}"><a class="page-link" href="${(now == 1)? "javascript:void(0)": "blogs.html?" + buildQuery(now - 1)}">&laquo;</a></li>`);
 		for (let page = start; page <= end; page ++) {
-			$("#pagination").append(`<li class="page-item ${(now == page)? "active": ""}"><a class="page-link" href="${(now == page)? "javascript:void(0)": "blogs.html?page=" + page}">${page}</li>`);
+			$("#pagination").append(`<li class="page-item ${(now == page)? "active": ""}"><a class="page-link" href="${(now == page)? "javascript:void(0)": "blogs.html?" + buildQuery(page)}">${page}</li>`);
 		}
-		$("#pagination").append(`<li class="page-item ${(now == pages)? "disabled": ""}"><a class="page-link" href="${(now == pages)? "javascript:void(0)": "blogs.html?page=" + (now + 1)}">&raquo;</a></li>`);
+		$("#pagination").append(`<li class="page-item ${(now == pages)? "disabled": ""}"><a class="page-link" href="${(now == pages)? "javascript:void(0)": "blogs.html?" + buildQuery(now + 1)}">&raquo;</a></li>`);
 		$("#pagination-container").removeClass("d-none");
 	}
 }
 
 function searchBlogs(blogsList) {
-	let canAdd = false;
-	let html = "";
+	let matchedBlogs = [];
 	for (let blog of blogsList) {
-		canAdd = true;
+		let canAdd = true;
 		// 匹配startDate与endDate
 		let blogDate = new Date(blog.time);
 		if (!((option.get("startDate") <= blogDate) && (blogDate <= option.get("endDate")))) {
@@ -192,18 +209,11 @@ function searchBlogs(blogsList) {
 			});
 		}
 		if (canAdd) {
-			let tagsHtml = "";
-			for (let tag of blog.tags) {
-				tagsHtml += `<a href="blogs.html?tag=${tag}"><span class="badge rounded-pill bg-primary me-1">${tag}</span></a>`;
-			}
-			html += "<li class='list-group-item list-group-item-action d-flex justify-content-between align-items-start'>";
-			html += "<div class='ms-2 me-auto'>";
-			html += `${getBlogFileName(...blog.time, false)} &raquo; <a href="blog.html?${getBlogFileName(...blog.time, false)}">${blog.title}</a>`;
-			html +=`</div><div class="blog-tags-list">${tagsHtml}</div></li>`;
+			matchedBlogs.push(blog);
 		}
 	}
-	if (html.length > 0) {
-		$("#blog-list").append(html);
+	if (matchedBlogs.length > 0) {
+		showBlogsList(matchedBlogs);
 	} else {
 		$("#blog-list").append("<p align='center' class='text-muted' style='font-size: 200%'>没有找到 :(</p>");
 	}
