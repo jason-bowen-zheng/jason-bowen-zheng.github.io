@@ -1,11 +1,14 @@
-name: test
+name: Build
 on: push
 
 jobs:
-  first-job:
-    name: First Job
+  gen-cache:
+    name: Generate blogs cache
     runs-on: ubuntu-latest
     steps:
-    - name: Hello
-      run: |
-        echo Hello
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v3
+    - name: Set up environment
+      with:
+        python-version: "3.x"
+    - run: python --version
