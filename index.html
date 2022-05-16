@@ -38,14 +38,14 @@
 			</div>
 		</div>
 		<div class="modal fade" id="search-modal" data-bs-backdrop="static">
-			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-md-down">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title">搜索</h5>
 						<button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<form onsubmit="void(0)">
+						<form>
 							<div class="mb-3">
 								<label class="form-label" for="text">博客内容：</label>
 								<input class="form-control" id="searchModal-text" name="text" placeholder="出现在内容或标题中的字词句" type="text" required>
@@ -141,11 +141,12 @@
 						<div class="card-body">
 							<div id="search-blog-section">
 								<h2 class="card-title">搜索博客</h2>
-								<input class="form-control" id="search-text" placeholder="搜索博客..." type="text">
-								<div class="d-grid gap-2 d-flex justify-content-end mt-2">
-									<button class="btn btn-outline-primary" id="btn-search">搜索博客</button>
-									<div class="m-1"></div>
-									<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#search-modal">更多...</button>
+								<div class="input-group">
+									<input class="form-control" id="search-text" placeholder="搜索博客..." type="text">
+									<button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#search-modal">
+										<span class="bi bi-three-dots"></span>
+									</button>
+									<button class="btn btn-outline-primary" id="btn-search"><span class="bi bi-search"></span></button>
 								</div>
 							</div>
 							<div class="split mt-3 mb-3" style="width: 75%;"></div>

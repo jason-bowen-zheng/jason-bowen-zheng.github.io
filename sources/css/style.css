@@ -128,14 +128,18 @@ table > * > tr > td.none {
 	background-color: #eeeeee;
 }
 
+@media (max-width: 575.98px) {
+
+	.blog-tags-list {
+		display: none;
+	}
+
+}
+
 @media (max-width: 767.98px) {
 
 	.right-column {
 		margin-top: 1rem;
-	}
-
-	.blog-tags-list {
-		display: none;
 	}
 
 	pre {
