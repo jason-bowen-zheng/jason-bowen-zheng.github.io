@@ -4,7 +4,6 @@ jobs:
   gen-cache:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up environment
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
         with:
