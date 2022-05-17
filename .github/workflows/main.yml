@@ -2,7 +2,7 @@ name: build
 on:
   push:
     paths:
-      - "blogs/**.md"
+      - "blogs/[0-9]+-[0-9]+-[0-9]+.md"
 jobs:
   update-cache:
     runs-on: ubuntu-latest

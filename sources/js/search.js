@@ -170,30 +170,28 @@ function searchBlogs() {
 		}
 	});
 	for (let blog of blogsList) {
-		let canAdd = true;
 		// 匹配startDate与endDate
 		let blogDate = new Date(blog.time);
 		if (!((option.get("startDate") <= blogDate) && (blogDate <= option.get("endDate")))) {
-			canAdd = false;
 			continue;
 		}
 		// 匹配tag
+		let unmatch = false;
 		for (let tag of option.get("tag")) {
 			if (blog.tags.indexOf(tag) == -1) {
-				canAdd = false;
-				break;
+				unmatch = true;
 			}
 		}
+		if (unmatch) {
+			continue;
+		}
 		// 匹配text
-		if (blog.title.indexOf(option.get("text")) == -1) {
-			canAdd = false;
+		if (option.get("text").length > 0) {
+			if ((blog.content.indexOf(option.get("text")) != -1) || (blog.title.indexOf(option.get("text")) != -1)) {
+				continue;
+			}
 		}
-		if (blog.content.indexOf(option.get("text")) != -1) {
-			canAdd = true;
-		}
-		if (canAdd) {
-			matchedBlogs.push(blog);
-		}
+		matchedBlogs.push(blog);
 	}
 	if (matchedBlogs.length > 0) {
 		showBlogsList(matchedBlogs);
