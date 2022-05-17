@@ -1,14 +1,13 @@
-name: Build
-on: push
-
+name: build
+on: [push]
 jobs:
   gen-cache:
-    name: Generate blogs cache
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v3
-    - name: Set up environment
-      with:
-        python-version: "3.x"
-    - run: python --version
+		name: Generate blogs cache
+		runs-on: ubuntu-latest
+		steps:
+			- name: Set up environment
+			- uses: actions/checkout@v3
+			- uses: actions/setup-python@v3
+				with:
+					python-version: "3.x"
+			- run: python --version
