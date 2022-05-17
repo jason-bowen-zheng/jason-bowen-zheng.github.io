@@ -84,6 +84,8 @@ function setOption() {
 			}
 		} else if (key == "tag") {
 			value = value.split(",");
+		} else if (key == "text") {
+			value = value.toLowerCase();
 		}
 		option.set(key, value);
 	}
@@ -187,7 +189,7 @@ function searchBlogs() {
 		}
 		// 匹配text
 		if (option.get("text").length > 0) {
-			if ((blog.content.indexOf(option.get("text")) != -1) || (blog.title.indexOf(option.get("text")) != -1)) {
+			if (!((blog.content.indexOf(option.get("text")) != -1) || (blog.title.indexOf(option.get("text")) != -1))) {
 				continue;
 			}
 		}

@@ -19,7 +19,7 @@ for (let blog of JSON.parse(fs.readFileSync("blogs/index.json"))) {
         time: blog.time,
         title: blog.title,
         tags: blog.tags,
-        content: text
+        content: text.toLowerCase()
     })
 }
 
