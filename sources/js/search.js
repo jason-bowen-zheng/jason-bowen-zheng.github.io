@@ -164,7 +164,7 @@ function searchBlogs() {
 	let matchedBlogs = [], blogsList;
 	$.ajax({
 		"async": false,
-		"url": "blogs/.cache.json",
+		"url": "blogs/cache.json",
 		"success": (data) => {
 			blogsList = data;
 		}
