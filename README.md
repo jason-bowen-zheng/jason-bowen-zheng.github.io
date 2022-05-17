@@ -3,14 +3,11 @@
 
 由于没有使用Jekyll，源代码提交上去后过一会儿就会部署完成，不需要等待。
 
-同时，这样的话劣势也是很明显的：
-> 不过测试了一些浏览器，速度还是可以接受的。
+搜索博客需要先创建一个缓存文件。您可以在提交前运行`update-cache.js`：
 
-1. 使用了大量的Javascript，会使网站的渲染降速
-2. 使用了Ajax，且为了处理方便大部分都设计成了同步请求，亦会降速
+```shell
+node update-cache.js
+```
 
-从另一方面看，这样做也是有好处的：
-
-- 高度自定义
-  > 似乎就想到了这一点呢...
-
+或使用GitHub Action自动部署。
+> 您可以编辑[配置文件](https://github.com/jason-bowen-zheng/jason-bowen-zheng.github.io/blob/master/.github/workflows/main.yml)进行自定义。

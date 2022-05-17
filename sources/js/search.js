@@ -161,13 +161,21 @@ function showBlogsList(blogsList) {
 }
 
 function searchBlogs() {
-	let matchedBlogs = [];
-	for (let blog of getBlogsList()) {
+	let matchedBlogs = [], blogsList;
+	$.ajax({
+		"async": false,
+		"url": "blogs/.cache.json",
+		"success": (data) => {
+			blogsList = data;
+		}
+	});
+	for (let blog of blogsList) {
 		let canAdd = true;
 		// 匹配startDate与endDate
 		let blogDate = new Date(blog.time);
 		if (!((option.get("startDate") <= blogDate) && (blogDate <= option.get("endDate")))) {
 			canAdd = false;
+			continue;
 		}
 		// 匹配tag
 		for (let tag of option.get("tag")) {
@@ -180,25 +188,8 @@ function searchBlogs() {
 		if (blog.title.indexOf(option.get("text")) == -1) {
 			canAdd = false;
 		}
-		if (option.get("text").length > 0) {
-			$.ajax({
-				"async": false,
-				"url": getBlogFileName(...blog.time),
-				"success": (text) => {
-					// 清除各种Markdown标记
-					text = text.replace(/^#{1,6}\s*/gm, "")
-						.replace(/\$\$([^\$\$]+?)\$\$/g, "").replace(/\$([^\$]+?)\$/g, "")
-						.replace(/\s*-\s*/gm, "").replace(/\s*\d+\.\s*/gm, "")
-						.replace(/\s*>*\s*/gm, "").replace(/\*\*\*?/g, "").replace(/__/g, "")
-						.replace(/\[(.+?)\]\(.+?\)/g, "$1").replace(/[|:-]/g, "")
-						.replace(/<div.+?>/g, "").replace(/<\/div>/g, "")
-						.replace(/&.+?;/g, "").replace(/\s/g, "")
-						.replace(/<!\-\-.+?\-\->/gsm, "");
-					if (text.indexOf(option.get("text")) != -1) {
-						canAdd = true;
-					}
-				}
-			});
+		if (blog.content.indexOf(option.get("text")) != -1) {
+			canAdd = true;
 		}
 		if (canAdd) {
 			matchedBlogs.push(blog);
