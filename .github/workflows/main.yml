@@ -8,16 +8,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 14
-      - name: Update cache
-        run: |
+      - run: |
           node update-cache.js
-      - name: Commit file
-        run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Action"
           git add .
           git commit -m `date +%Y-%m-%d`"(update cache)"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-          with:
-            github_token: ${{ secrets.ACCESS_TOKEN }}
+      - uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
