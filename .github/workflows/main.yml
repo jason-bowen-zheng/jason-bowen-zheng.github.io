@@ -5,7 +5,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-node@v3
         with:
-          python-version: "3.x"
-      - run: python update-cache.py
+          node-version: 14
+      - name: Update cache
+        run: |
+          node update-cache.js
+      - name: Commit file
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m `date +%Y-%m-%d`"(update cache)"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+          with:
+            github_token: ${{ secrets.ACCESS_TOKEN }}
