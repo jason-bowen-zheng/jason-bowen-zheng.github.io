@@ -1,4 +1,6 @@
 # 鄙人的主页
+![build status](https://github.com/jason-bowen-zheng/jason-bowen-zheng.github.io/actions/workflows/main.yml/badge.svg)
+
 这是一个博客网站，从零开始一行一行敲出来的。
 
 由于没有使用Jekyll，源代码提交上去后过一会儿就会部署完成，不需要等待。
