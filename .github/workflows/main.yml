@@ -19,4 +19,4 @@ jobs:
           git commit -m `date +%Y-%m-%d`"(update cache)"
       - uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.ACCESS_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
