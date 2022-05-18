@@ -167,6 +167,9 @@ function searchBlogs() {
 	$.ajax({
 		"async": false,
 		"url": "blogs/cache.json",
+		"error": (xhr) => {
+			blogsList = [];
+		},
 		"success": (data) => {
 			blogsList = data;
 		}
