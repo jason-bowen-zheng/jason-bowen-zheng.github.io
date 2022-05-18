@@ -10,6 +10,7 @@ function getBlogFileName(year, month, day) {
 for (let blog of JSON.parse(fs.readFileSync("blogs/index.json"))) {
     text = fs.readFileSync(getBlogFileName(...blog.time)).toString()
     text = text.replace(/^#{1,6}\s*/gm, "").replace(/<!\-\-.+?\-\->/gsm, "")
+        .replace(/<div .+?>/g, "").replace(/<\/div>/g, "")
         .replace(/\$\$([^\$\$]+?)\$\$/g, "").replace(/\$([^\$]+?)\$/g, "")
         .replace(/\s*-\s*/gm, "").replace(/\s*\d+\.\s*/gm, "")
         .replace(/\s*>*\s*/gm, "").replace(/\*\*\*?/g, "").replace(/__/g, "")
