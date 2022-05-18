@@ -14,7 +14,7 @@ for (let blog of JSON.parse(fs.readFileSync("blogs/index.json"))) {
         .replace(/\$\$([^\$\$]+?)\$\$/g, "").replace(/\$([^\$]+?)\$/g, "")
         .replace(/\s*-\s*/gm, "").replace(/\s*\d+\.\s*/gm, "")
         .replace(/\s*>*\s*/gm, "").replace(/\*\*\*?/g, "").replace(/__/g, "")
-        .replace(/\[(.+?)\]\(.+?\)/g, "$1").replace(/&.+?;/g, "")
+        .replace(/!?\[(.+?)\]\(.+?\)/g, "$1").replace(/&.+?;/g, "")
         .replace(/[|:-]/g, "").replace(/\\/g, "").replace(/['"，。、；：？（）‘’“”]/g, "")
     cache.push({
         time: blog.time,
