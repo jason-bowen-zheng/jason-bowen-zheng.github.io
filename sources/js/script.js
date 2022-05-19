@@ -109,7 +109,7 @@ function renderMarkdown(text) {
 	};
 
 	renderer.image = function (href, title, text) {
-		return `<img alt="${text}" src="${(href.indexOf("//") != -1)? href: "sources/images/" + href}">`;
+		return `<div class="d-flex justify-content-center"><img alt="${text}" src="${(href.indexOf("//") != -1)? href: "sources/images/" + href}"></div>`;
 	};
 	renderer.hr = function () {
 		return "<div class='split' style='width: 50%'></div>";

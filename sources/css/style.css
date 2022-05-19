@@ -133,8 +133,7 @@ table > * > tr > td.none {
 @media (max-width: 767.98px) {
 
 	#blog-container img {
-		margin: auto;
-		max-width: 95%;
+		max-width: 90%;
 	}
 
 	pre {
@@ -144,8 +143,12 @@ table > * > tr > td.none {
 		padding: 4px;
 	}
 
-	.right-column {
+	.main-page > .right-column {
 		margin-top: 1rem;
+	}
+
+	.blog > .right-column {
+		display: none;
 	}
 
 }
@@ -153,8 +156,7 @@ table > * > tr > td.none {
 @media (min-width: 768px) {
 
 	#blog-container img {
-		margin: auto;
-		max-width: 300px;
+		max-width: 400px;
 	}
 
 	.main-page {
@@ -162,18 +164,32 @@ table > * > tr > td.none {
 		width: 95%;
 	}
 
-	.left-column {
+	.main-page > .left-column {
 		float: left;
 		margin: 5px;
 		padding: 5px;
 		width: 59%;
 	}
 
-	.right-column {
+	.main-page > .right-column {
 		float: right;
 		margin: 5px;
 		padding: 5px;
 		width: 37%;
+	}
+
+	.blog > .left-column {
+		float: left;
+		margin: 5px;
+		padding: 5px;
+		width: 68%;
+	}
+
+	.blog > .right-column {
+		float: right;
+		margin: 5px;
+		padding: 5px;
+		width: 28%;
 	}
 
 	.other-projects-row {
