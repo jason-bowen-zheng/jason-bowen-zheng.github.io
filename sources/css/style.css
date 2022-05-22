@@ -178,6 +178,18 @@ table > * > tr > td.none {
 		width: 37%;
 	}
 
+	.math-notes {
+		display: flex;
+		align-content: center;
+		justify-content: center;
+		flex-wrap: wrap;
+	}
+
+	.math-notes > .card {
+		margin: 0.5rem;
+		width: 48%;
+	}
+
 	.blog > .left-column {
 		float: left;
 		margin: 5px;
