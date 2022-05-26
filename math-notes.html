@@ -14,6 +14,29 @@
 		</script>
 	</head>
 	<body>
+		<div class="modal fade" id="about-modal" data-bs-backdrop="static">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">关于这本笔记</h5>
+						<button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>首先，欢迎您阅读我的高中数学笔记，我已经极其认真的检查过了每一个细节，如果发现了错误还请指出。</p>
+						<p>其次，是关于这本笔记的使用方式：它适合对已学知识的复习和重组，并不适用于自学。</p>
+						<p>
+							<blockquote>
+								这个嘛，是因为老师课是按照教科书上上的，但是内容可不按照教科书上的走。<br>
+								翻翻教科书就可得知：导数不可能和单调性及对称性一起上，只是因为它们和函数相关就被放在了一起。
+							</blockquote>
+						</p>
+						<p>这个是网页，我不想设计得过于花狸狐哨，可能导致有些句子的作用不理解。这个只能怪你理解能力弱了。</p>
+						<p>数学笔记嘛，难免会有些枯燥。这是没有办法的，我尽量试着把它变得有趣一点。</p>
+						<p>最后，如果您猜到了这本笔记出自哪位数学老师，那请您保管住这个事实。</p>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="navbar navbar-light bg-light">
 			<div class="container-fluid">
 				<a class="navbar-brand" href=".">个人小站</a>
@@ -23,17 +46,22 @@
 		</div>
 		<div class="content">
 			<h1 class="text-center">高中数学笔记</h1>
-			<p class="text-center">这里整理了我高中时期的所有数学笔记。</p>
+			<p class="text-center">这里整理了我高中时期的所有数学笔记。<br><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#about-modal">关于这本笔记...</a></p>
 			<div class="math-notes">
 				<div class="card mb-2">
 					<div class="card-body">
 						<h2 class="card-title">代数基础</h2>
-						<p>引入高中数学。如果看不懂的话请看后面的部分，这里的笔记不是线性的。每一部分都与其它部分联系密切。</p>
+						<p>引入高中数学，作为高中数学的基础。</p>
 						<ul class="card-text">
 							<li>集合与命题</li>
 							<li>分类讨论</li>
 							<li>数量关系</li>
-							<li>恒成立与有解</li>
+							<li>恒成立与有解
+								<ul>
+									<li>不等式问题</li>
+									<li>等式问题</li>
+								</ul>
+							</li>
 						</ul>
 					</div>
 				</div>
